@@ -33,7 +33,12 @@ with sync_playwright() as pw:
     wait("!busy && document.getElementById('notice').textContent.includes('Frequency 已更新')")
     page.locator('#channel-settings summary').click()
     page.locator('#signal-search').fill('')
-    page.locator('#select-visible').click()
+    values=page.evaluate('state.signals.filter(s=>s.kind==="scalar").map(s=>s.id)')
+    for sid in values:
+        labels=page.locator('#signals label')
+        for i in range(labels.count()):
+            if sid==labels.nth(i).locator('small').last.inner_text():
+                labels.nth(i).locator('input').check();break
     assert page.locator('#signals input[type=checkbox]:checked').count()==2
     page.locator('#start').click()
     wait('live.running && live.series.length===2 && live.series.every(s=>s.count>=1500)')

@@ -635,3 +635,40 @@ canvas[hidden] {
     grid-template-columns: 1fr;
   }
 }
+.cursor-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.cursor-toggle input {
+  width: auto;
+}
+.chain-card {
+  border: 1px solid #dce3e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+}
+.chain-link {
+  font-size: 12px;
+  color: #557582;
+  overflow-wrap: anywhere;
+}
+.chain-output {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin: 12px 0;
+}
+.chain-output span {
+  overflow-wrap: anywhere;
+}
+.chain-preview {
+  height: 160px;
+}
+.plot-error {
+  color: #b13d28;
+}

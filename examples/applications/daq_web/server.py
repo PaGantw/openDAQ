@@ -77,6 +77,37 @@ class Bridge:
                         self.process.wait()
 
 
+class DisplayHistory:
+    """Thirty seconds of extrema-preserving 10 ms display buckets, independent of raw FFT samples."""
+    def __init__(self):
+        self.buckets = collections.deque(maxlen=3001)
+
+    def append(self, point):
+        key = math.floor(point[0] * 100)
+        if self.buckets and key < self.buckets[-1][0]:
+            self.buckets.clear()
+        while self.buckets and self.buckets[0][0] < key - 3000:
+            self.buckets.popleft()
+        if not self.buckets or self.buckets[-1][0] != key:
+            self.buckets.append([key, point, point, point, point, None])
+        b = self.buckets[-1]
+        b[4] = point
+        if point[1] is None or not math.isfinite(point[1]):
+            b[5] = point
+        else:
+            if b[2][1] is None or point[1] < b[2][1]:
+                b[2] = point
+            if b[3][1] is None or point[1] > b[3][1]:
+                b[3] = point
+
+    def points(self):
+        result = []
+        for bucket in self.buckets:
+            unique = {p[0]: p for p in bucket[1:] if p is not None}
+            result.extend(unique[t] for t in sorted(unique))
+        return result
+
+
 class Station:
     MUTATIONS = {'connect', 'disconnect', 'set', 'block_add', 'block_remove',
                  'port_connect', 'port_disconnect', 'config_load'}
@@ -109,6 +140,64 @@ class Station:
             self.event(reason + ': ' + r['name'])
             self.record = None
 
+    def _record_row(self, row):
+        if not self.record:
+            return
+        r = self.record
+        r['writer'].writerow(row)
+        r['rows'] += 1
+        if r['rows'] >= 2_000_000 or r['file'].tell() >= 256 * 1024 * 1024:
+            self._finish_record('Recording size limit reached')
+
+    @staticmethod
+    def _new_series():
+        return {'points': collections.deque(maxlen=8192), 'history': DisplayHistory(),
+                'count': 0, 'finiteCount': 0, 'mean': 0.0, 'squareMean': 0.0,
+                'min': None, 'max': None, 'firstTick': None, 'origin': '',
+                'pending': 0, 'kind': 'scalar', 'error': '', 'frame': None}
+
+    def _ingest(self, batch):
+        sid = batch['id']
+        s = self.series[sid]
+        if 'error' in batch:
+            if s['error'] != batch['error']:
+                self.event(sid + ': ' + batch['error'])
+            s['error'] = batch['error']
+            return
+        s['error'] = ''
+        s['kind'] = batch.get('kind', 'scalar')
+        s['pending'] = batch.get('pending', 0)
+        if s['kind'] == 'vector':
+            for frame in batch.get('frames', []):
+                s['count'] += 1
+                s['frame'] = frame
+                tick = frame.get('tick')
+                if tick is not None and s['firstTick'] is None:
+                    s['firstTick'] = tick
+                num, den = int(frame.get('tickNumerator', '1')), int(frame.get('tickDenominator', '1'))
+                seconds = (int(tick) - int(s['firstTick'])) * num / den if tick is not None else None
+                for i, (axis, value) in enumerate(zip(frame['axis'], frame['values'])):
+                    self._record_row([sid, frame.get('origin', ''), tick, num, den,
+                                      seconds, value, i, axis, frame.get('axisUnit', '')])
+            return
+        numerator, denominator = int(batch.get('tickNumerator', '1')), int(batch.get('tickDenominator', '1'))
+        for tick, value in zip(batch.get('ticks', []), batch.get('values', [])):
+            if s['firstTick'] is None:
+                s['firstTick'] = tick
+            seconds = (int(tick) - int(s['firstTick'])) * numerator / denominator
+            point = [seconds, value]
+            s['points'].append(point)
+            s['history'].append(point)
+            s['count'] += 1
+            s['origin'] = batch.get('origin', '')
+            if value is not None and math.isfinite(value):
+                s['finiteCount'] += 1
+                s['mean'] += (value - s['mean']) / s['finiteCount']
+                s['squareMean'] += (value * value - s['squareMean']) / s['finiteCount']
+                s['min'] = value if s['min'] is None else min(s['min'], value)
+                s['max'] = value if s['max'] is None else max(s['max'], value)
+            self._record_row([sid, batch.get('origin', ''), tick, numerator, denominator, seconds, value, '', '', ''])
+
     def _acquire(self):
         while not self.closed.wait(0.1):
             with self.lock:
@@ -117,36 +206,12 @@ class Station:
                 try:
                     result = self.bridge.call('samples')
                     for batch in result['batches']:
-                        sid = batch['id']
-                        if 'error' in batch:
-                            raise RuntimeError(sid + ': ' + batch['error'])
-                        s = self.series[sid]
-                        s['pending'] = batch.get('pending', 0)
-                        for tick, value in zip(batch['ticks'], batch['values']):
-                            if s['firstTick'] is None:
-                                s['firstTick'] = tick
-                            numerator = int(batch.get('tickNumerator', '1'))
-                            denominator = int(batch.get('tickDenominator', '1'))
-                            seconds = (int(tick) - int(s['firstTick'])) * numerator / denominator
-                            s['points'].append([seconds, value])
-                            s['count'] += 1
-                            s['origin'] = batch.get('origin', '')
-                            if value is not None and math.isfinite(value):
-                                s['finiteCount'] += 1
-                                s['mean'] += (value - s['mean']) / s['finiteCount']
-                                s['squareMean'] += (value * value - s['squareMean']) / s['finiteCount']
-                                s['min'] = value if s['min'] is None else min(s['min'], value)
-                                s['max'] = value if s['max'] is None else max(s['max'], value)
-                            if self.record:
-                                r = self.record
-                                r['writer'].writerow([sid, batch.get('origin', ''), tick,
-                                                      numerator, denominator, seconds, value])
-                                r['rows'] += 1
-                                if r['rows'] >= 2_000_000 or r['file'].tell() >= 256 * 1024 * 1024:
-                                    self._finish_record('Recording size limit reached')
+                        self._ingest(batch)
                     if self.record:
                         self.record['file'].flush()
                     self.sequence += 1
+                    if self.series and all(s['error'] for s in self.series.values()):
+                        raise RuntimeError('All selected signals failed; inspect per-signal errors')
                 except Exception as exc:
                     self.running = False
                     self._finish_record('Recording stopped after acquisition error')
@@ -157,8 +222,9 @@ class Station:
             series = []
             for sid, s in self.series.items():
                 series.append({'id': sid, **{k: v for k, v in s.items()
-                              if k not in ('points', 'squareMean', 'finiteCount')},
-                               'rms': math.sqrt(max(0, s['squareMean'])), 'points': list(s['points'])})
+                              if k not in ('points', 'history', 'squareMean', 'finiteCount')},
+                               'rms': math.sqrt(max(0, s['squareMean'])),
+                               'points': s['history'].points(), 'rawPoints': list(s['points'])})
             return {'running': self.running, 'sequence': self.sequence, 'series': series,
                     'recording': ({k: self.record[k] for k in ('id', 'name', 'rows', 'started')}
                                   if self.record else None),
@@ -175,10 +241,7 @@ class Station:
                     raise ValueError('Select 1–16 scalar numeric signals')
                 self.bridge.call('subscribe', signals=selected)
                 self.selected = selected
-                self.series = {sid: {'points': collections.deque(maxlen=8192), 'count': 0,
-                                     'finiteCount': 0, 'mean': 0.0, 'squareMean': 0.0,
-                                     'min': None, 'max': None, 'firstTick': None,
-                                     'origin': '', 'pending': 0} for sid in selected}
+                self.series = {sid: self._new_series() for sid in selected}
                 self.running = True
                 self.event('Acquisition started')
                 return self.live()
@@ -197,7 +260,8 @@ class Station:
                 f = (self.recordings / name).open('x', newline='', encoding='utf-8')
                 writer = csv.writer(f)
                 writer.writerow(['signal_id', 'domain_origin', 'domain_tick', 'tick_numerator',
-                                 'tick_denominator', 'relative_seconds', 'value'])
+                                 'tick_denominator', 'relative_seconds', 'value', 'vector_index',
+                                 'dimension_coordinate', 'dimension_unit'])
                 self.record = {'id': rid, 'name': name, 'file': f, 'writer': writer, 'rows': 0,
                                'started': dt.datetime.now(dt.timezone.utc).isoformat()}
                 self.event('Recording started: ' + name)
@@ -319,7 +383,9 @@ def main():
         parser.error('Build the SDK bridge and modules first')
     station = Station(Bridge(args.bridge.resolve(), args.modules.resolve()), args.recordings)
     try:
-        station.command('state', {})  # Fail startup if the source-built SDK cannot initialize.
+        initial = station.command('state', {})
+        if initial.get('bridgeVersion', 0) < 2:
+            raise SystemExit('SDK bridge is older than this server. Run build_windows.cmd (or build.py) before starting again.')
         try:
             server = ThreadingHTTPServer((args.host, args.port), Handler)
         except OSError as exc:

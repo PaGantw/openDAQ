@@ -136,6 +136,47 @@ class WorkstationTests(unittest.TestCase):
         self.call('disconnect', id=restored_device)
         self.assertFalse([n for n in self.call('state')['nodes'] if n['kind'] == 'device'])
 
+    def test_015_time_and_fft_vector_can_acquire_together(self):
+        device = self.call('connect', connection='daqref://device0')['id']
+        state = self.call('state')
+        source = next(s for s in state['signals'] if s['id'].startswith(device + '/') and s.get('kind') == 'scalar')
+        time_signal = next(s for s in state['signals'] if s.get('domainSource') == source['id'])
+        block = self.call('block_add', type='RefFBModuleFFT')['id']
+        try:
+            self.call('set', id=block, name='BlockSize', value=128)
+            state = self.call('state')
+            port = next(b['ports'][0]['id'] for b in state['blocks'] if b['id'] == block)
+            self.call('port_connect', port=port, signal=source['id'])
+            end = time.monotonic() + 5
+            while time.monotonic() < end:
+                state = self.call('state')
+                candidates = [s for s in state['signals'] if s['id'].startswith(block + '/') and s.get('kind') == 'vector']
+                if candidates:
+                    break
+                time.sleep(.05)
+            self.assertTrue(candidates)
+            vector = candidates[0]
+            self.call('start', signals=[source['id'], time_signal['id'], vector['id']])
+            self.call('record_start')
+            live = self.wait_samples(minimum=2)
+            by_id = {s['id']: s for s in live['series']}
+            self.assertEqual(by_id[time_signal['id']]['kind'], 'time')
+            self.assertGreater(by_id[time_signal['id']]['rawPoints'][-1][1], by_id[time_signal['id']]['rawPoints'][0][1])
+            frame = by_id[vector['id']]['frame']
+            self.assertIsNotNone(frame)
+            self.assertEqual(len(frame['values']), 128)
+            self.assertEqual(frame['axisUnit'], 'Hz')
+            self.assertGreater(frame['axis'][-1], frame['axis'][0])
+            recording = self.call('record_stop')['recordings'][-1]
+            _, content = self.request('/api/recordings/' + recording['id'])
+            rows = list(csv.DictReader(io.StringIO(content.decode())))
+            self.assertTrue(any(r['signal_id'] == vector['id'] and r['dimension_unit'] == 'Hz' for r in rows))
+            self.assertTrue(any(r['signal_id'] == time_signal['id'] for r in rows))
+        finally:
+            self.call('stop')
+            self.call('block_remove', id=block)
+            self.call('disconnect', id=device)
+
     def test_02_invalid_commands_do_not_crash_bridge(self):
         for op, kwargs in [('start', {'signals': []}), ('record_start', {}),
                            ('set', {'id': '/missing', 'name': 'Frequency'}),

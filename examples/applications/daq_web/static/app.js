@@ -16,6 +16,7 @@ let token = "",
   paused = false,
   currentComponent = "";
 let frozenSeries = [];
+let lastChainRefresh = 0;
 const viewRanges = new Map(),
   plotCursors = new Map();
 function el(tag, text, cls) {
@@ -79,7 +80,10 @@ function showTab(id) {
   $("page-title").textContent = document.querySelector(
     `[data-tab="${id}"] span`,
   ).textContent;
-  if (id === "acquisition") drawPlots();
+  if (id === "acquisition") {
+    renderSignals();
+    drawPlots();
+  }
 }
 document
   .querySelectorAll(".nav")
@@ -105,6 +109,7 @@ async function refresh() {
   renderDevices();
   renderSignals();
   renderBlocks();
+  renderChain();
   const selector = $("component");
   selector.replaceChildren();
   for (const n of [...state.nodes, ...state.signals]) {
@@ -162,7 +167,7 @@ function renderSignals() {
       check = el("input");
     check.type = "checkbox";
     check.checked = selected.has(s.id);
-    check.disabled = !!live.running;
+    check.disabled = !!live.running || s.readable === false;
     check.onchange = () => {
       if (check.checked && selected.size >= 16) {
         check.checked = false;
@@ -174,6 +179,18 @@ function renderSignals() {
       $("selected-count").textContent = `已選取 ${selected.size} / 16`;
     };
     const text = el("span", s.name + (s.unit ? " · " + s.unit : ""));
+    text.append(
+      el(
+        "small",
+        s.kind === "time"
+          ? "TIME／時間軸"
+          : s.kind === "vector"
+            ? "向量／頻譜"
+            : s.readable === false
+              ? "目前不支援的資料型態"
+              : "純量數值",
+      ),
+    );
     text.append(el("small", s.id));
     label.append(check, text);
     const settings = button("設定", async () => {
@@ -223,6 +240,7 @@ $("signal-search").oninput = renderSignals;
 $("select-visible").onclick = () => {
   if (live.running) return;
   for (const s of filteredSignals()) {
+    if (s.readable === false) continue;
     if (selected.size >= 16) break;
     selected.add(s.id);
   }
@@ -479,6 +497,78 @@ $("block-form").onsubmit = (e) => {
     notice("功能方塊已建立，請接上輸入訊號。");
   });
 };
+function renderChain() {
+  const box = $("live-chain");
+  box.replaceChildren();
+  for (const block of state.blocks) {
+    const card = el("div", undefined, "chain-card");
+    card.append(el("strong", block.name));
+    for (const port of block.ports) {
+      const source = state.signals.find((s) => s.id === port.signal);
+      card.append(
+        el(
+          "p",
+          `${source?.name || port.signal || "未接線"} → ${port.name} → ${block.name}`,
+          "chain-link",
+        ),
+      );
+    }
+    for (const id of block.outputs || []) {
+      const signal = state.signals.find((s) => s.id === id),
+        series = (live.series || []).find((s) => s.id === id);
+      const row = el("div", undefined, "chain-output");
+      const status = series
+        ? series.error
+          ? "錯誤：" + series.error
+          : series.kind === "vector"
+            ? `${series.count} frames／${series.frame?.values.length || 0} 點`
+            : `${fmt(series.rawPoints?.at(-1)?.[1] ?? series.points?.at(-1)?.[1])} ${signal?.unit || ""} · ${series.count} samples`
+        : "未選為擷取訊號";
+      row.append(
+        el("span", `${signal?.name || id} → ${status}`),
+        button("監看輸出", async () => {
+          if (!selected.has(id) && live.running)
+            throw Error("請先停止擷取，再加入這個輸出訊號。");
+          selected.add(id);
+          renderSignals();
+          showTab("acquisition");
+        }),
+      );
+      card.append(row);
+      if (series) {
+        const points =
+          series.kind === "vector" && series.frame
+            ? series.frame.axis.map((x, i) => [x, series.frame.values[i]])
+            : series.points;
+        if (points?.length > 1) {
+          const c = el("canvas");
+          c.className = "chain-preview";
+          c.setAttribute("aria-label", (signal?.name || id) + " 即時輸出");
+          card.append(c);
+          box.append(card);
+          chart(c, points, [points[0][0], points.at(-1)[0] || 1], "#0784a0", {
+            height: 160,
+            xunit:
+              series.kind === "vector" ? series.frame.axisUnit || "index" : "s",
+          });
+        }
+      }
+    }
+    box.append(card);
+  }
+  if (!state.blocks.length)
+    box.textContent = "尚無功能方塊。新增並接線後會顯示即時訊號鏈。";
+  $("chain-status").textContent = live.running
+    ? "擷取中 · 即時更新"
+    : "待命 · 接線狀態";
+}
+$("export-signals").onclick = () =>
+  action(async () =>
+    download(
+      "opendaq-signals.json",
+      JSON.stringify(await api("state"), null, 2),
+    ),
+  );
 function download(name, text) {
   const url = URL.createObjectURL(
       new Blob([text], { type: "application/json" }),
@@ -525,9 +615,16 @@ function renderLive() {
     : "尚未錄製或已結束。";
   const table = el("table"),
     head = el("tr");
-  ["訊號", "筆數", "最小", "最大", "峰對峰", "平均", "RMS", "待讀"].forEach(
-    (t) => head.append(el("th", t)),
-  );
+  [
+    "訊號",
+    "筆數／幀數",
+    "最小",
+    "最大",
+    "峰對峰",
+    "平均",
+    "RMS",
+    "待讀",
+  ].forEach((t) => head.append(el("th", t)));
   table.append(head);
   for (const s of live.series || []) {
     const row = el("tr");
@@ -538,8 +635,8 @@ function renderLive() {
       s.min,
       s.max,
       s.min === null || s.max === null ? null : s.max - s.min,
-      s.mean,
-      s.rms,
+      s.kind === "vector" ? null : s.mean,
+      s.kind === "vector" ? null : s.rms,
       s.pending,
     ].forEach((v, i) => row.append(el("td", i ? fmt(v) : v)));
     table.append(row);
@@ -572,6 +669,7 @@ function renderLive() {
   }
   $("sdk-logs").textContent = (live.sdkLogs || []).join("\n");
   if (!paused) drawPlots();
+  if ($("processing").classList.contains("active")) renderChain();
   updateButtons();
 }
 function displaySeries() {
@@ -600,8 +698,12 @@ function plotRange(series) {
   const duration = $("time-window").value;
   return (
     viewRanges.get(series.id) || [
-      duration === "all" ? begin : Math.max(begin, end - Number(duration)),
-      end > begin ? end : begin + 1,
+      duration === "all" ? begin : Math.max(0, end - Number(duration)),
+      duration === "all"
+        ? end > begin
+          ? end
+          : begin + 1
+        : Math.max(Number(duration), end),
     ]
   );
 }
@@ -716,18 +818,20 @@ function chart(canvas, points, range, color, options = {}) {
   };
 }
 function cursorText(readout, series, unit) {
+  const xunit =
+    series.kind === "vector" ? series.frame?.axisUnit || "index" : "s";
   const cursors = plotCursors.get(series.id) || {},
     parts = [];
   for (const key of ["a", "b"])
     if (cursors[key])
       parts.push(
-        `${key.toUpperCase()}: ${cursors[key][0].toFixed(6)} s / ${fmt(cursors[key][1])} ${unit}`,
+        `${key.toUpperCase()}: ${cursors[key][0].toFixed(6)} ${xunit} / ${fmt(cursors[key][1])} ${unit}`,
       );
   if (cursors.a && cursors.b) {
     const dt = cursors.b[0] - cursors.a[0],
       dv = cursors.b[1] - cursors.a[1];
     parts.push(
-      `Δt ${dt.toFixed(6)} s · ΔY ${fmt(dv)} ${unit} · 1/|Δt| ${dt ? fmt(1 / Math.abs(dt)) + " Hz" : "—"}`,
+      `Δ${xunit === "s" ? "t" : "X"} ${dt.toFixed(6)} ${xunit} · ΔY ${fmt(dv)} ${unit}${xunit === "s" ? " · 1/|Δt| " + (dt ? fmt(1 / Math.abs(dt)) + " Hz" : "—") : ""}`,
     );
   }
   readout.textContent = parts.join("  |  ") || "尚未放置游標";
@@ -738,6 +842,7 @@ function attachPlot(canvas, readout, series, unit, range, color, yOptions) {
   const paint = () => {
     geometry = chart(canvas, series.points, range, color, {
       ...yOptions,
+      xunit: series.kind === "vector" ? series.frame?.axisUnit || "index" : "s",
       cursors: plotCursors.get(series.id),
       drag: drag ? [drag.time, drag.current] : null,
     });
@@ -876,7 +981,16 @@ function drawPlots() {
   $("view-status").textContent = paused
     ? "畫面已凍結；擷取與錄製仍持續。"
     : "即時畫面";
-  displaySeries().forEach((s, i) => {
+  displaySeries().forEach((original, i) => {
+    let s =
+      original.kind === "vector"
+        ? {
+            ...original,
+            points: original.frame
+              ? original.frame.axis.map((x, i) => [x, original.frame.values[i]])
+              : [],
+          }
+        : original;
     const wrap = el("div", undefined, "plot"),
       label = el("div", undefined, "plot-label"),
       canvas = el("canvas"),
@@ -885,7 +999,10 @@ function drawPlots() {
       unit = signal?.unit || "";
     label.append(
       el("strong", (signal?.name || s.id) + (unit ? " / " + unit : "")),
-      el("span", `${s.count.toLocaleString()} samples`),
+      el(
+        "span",
+        `${s.count.toLocaleString()} ${s.kind === "vector" ? "frames" : "samples"}`,
+      ),
     );
     canvas.className = "wave-canvas";
     canvas.tabIndex = 0;
@@ -898,7 +1015,34 @@ function drawPlots() {
     readout.setAttribute("role", "status");
     wrap.append(label, canvas, readout);
     box.append(wrap);
-    const range = plotRange(s);
+    const range =
+      s.kind === "vector"
+        ? viewRanges.get(s.id) ||
+          (s.points.length ? [s.points[0][0], s.points.at(-1)[0] || 1] : null)
+        : plotRange(s);
+    if (
+      s.kind !== "vector" &&
+      range &&
+      s.rawPoints?.length &&
+      range[0] >= s.rawPoints[0][0]
+    )
+      s = { ...s, points: s.rawPoints };
+    if (s.error) {
+      readout.textContent = "讀取失敗：" + s.error;
+      readout.classList.add("plot-error");
+      return;
+    }
+    if (
+      range &&
+      $("show-cursors").checked &&
+      (!paused || !plotCursors.has(s.id))
+    ) {
+      const lo = Math.max(range[0], s.points[0]?.[0] ?? range[0]),
+        hi = Math.min(range[1], s.points.at(-1)?.[0] ?? range[1]);
+      const a = DAQAnalysis.nearest(s.points, lo + (hi - lo) / 3),
+        b = DAQAnalysis.nearest(s.points, lo + ((hi - lo) * 2) / 3);
+      if (a && b) plotCursors.set(s.id, { a, b });
+    }
     if (range)
       attachPlot(
         canvas,
@@ -919,7 +1063,9 @@ function drawPlots() {
 }
 function drawSpectrum() {
   const selector = $("spectrum-signal"),
-    series = displaySeries(),
+    series = displaySeries().filter(
+      (s) => s.kind !== "vector" && s.kind !== "time",
+    ),
     previous = selector.value;
   const keys = series.map((s) => s.id).join("\n");
   if (selector.dataset.keys !== keys) {
@@ -938,11 +1084,13 @@ function drawSpectrum() {
     status = $("spectrum-status");
   if (!s) {
     canvas.hidden = true;
-    status.textContent = "開始擷取後顯示頻譜。";
+    status.textContent = displaySeries().length
+      ? "本機 FFT 請選擇純量數值；TIME 與已計算的向量不重複做 FFT。"
+      : "開始擷取後顯示頻譜。";
     return;
   }
   const result = DAQAnalysis.spectrum(
-    s.points,
+    s.rawPoints || s.points,
     Number($("fft-size").value),
     $("fft-window").value,
     $("fft-dc").checked,
@@ -996,7 +1144,20 @@ for (const id of [
 $("reset-view").onclick = () => {
   viewRanges.clear();
   plotCursors.clear();
+  $("show-cursors").checked = false;
   drawPlots();
+};
+$("show-cursors").onchange = () => {
+  if ($("show-cursors").checked) freezeView();
+  else plotCursors.clear();
+  drawPlots();
+};
+$("plot-tool").onchange = () => {
+  if ($("plot-tool").value !== "zoom") {
+    $("show-cursors").checked = true;
+    freezeView();
+    drawPlots();
+  }
 };
 window.addEventListener("resize", drawPlots);
 
@@ -1006,6 +1167,20 @@ async function poll() {
     if (!response.ok) throw Error("無法讀取擷取狀態");
     live = await response.json();
     renderLive();
+    if (
+      !busy &&
+      Date.now() - lastChainRefresh > 1000 &&
+      ($("processing").classList.contains("active") || !live.running)
+    ) {
+      lastChainRefresh = Date.now();
+      const fresh = await api("state");
+      const signature = (s) =>
+        s.signals.map((v) => v.id + ":" + v.kind + ":" + v.readable).join("|");
+      const changed = signature(fresh) !== signature(state);
+      state = fresh;
+      if (changed) renderSignals();
+      if ($("processing").classList.contains("active")) renderChain();
+    }
   } catch (e) {
     notice("後端連線中斷：" + e.message, true);
   } finally {

@@ -10,6 +10,8 @@ if (OPENDAQ_ENABLE_TESTS AND DAQMODULES_REF_DEVICE_MODULE AND DAQMODULES_REF_FB_
                 --bridge $<TARGET_FILE:daq_web_bridge>
                 --modules $<TARGET_FILE_DIR:daq_web_bridge>)
         set_tests_properties(test_daq_web PROPERTIES TIMEOUT 180)
+        add_test(NAME test_daq_web_history
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_history.py)
         if (Python3_VERSION VERSION_GREATER_EQUAL "3.12")
             add_test(NAME test_daq_web_boost_bootstrap
                 COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_build_bootstrap.py)

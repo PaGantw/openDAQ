@@ -110,7 +110,8 @@
         <article class="panel">
           <div class="panel-head">
             <h3>已連線裝置</h3>
-            <button id="refresh">重新整理</button>
+            <button id="refresh">重新整理</button
+            ><button id="export-signals">匯出訊號描述</button>
           </div>
           <div id="connected" class="list empty">尚未連線。</div>
         </article>
@@ -129,7 +130,8 @@
         <div class="intro">
           <h2>看見每一段訊號。</h2>
           <p>
-            最多選擇 16 個純量數值訊號。畫面保留各訊號最近 8,192 筆資料；CSV
+            最多選擇 16 個數值、TIME 或一維向量訊號。波形保留最近 30
+            秒的極值歷史，FFT 使用最近 8,192 筆原始資料；CSV
             記錄擷取期間讀到的原始樣本。
           </p>
         </div>
@@ -217,7 +219,11 @@
               /></label>
             </div>
             <div class="button-row">
-              <button id="reset-view">重設縮放／游標</button>
+              <button id="reset-view">重設縮放／游標</button
+              ><label class="checkbox-label cursor-toggle"
+                ><input type="checkbox" id="show-cursors" checked />顯示 A/B
+                游標</label
+              >
             </div>
             <p class="muted">
               拖曳框選時間範圍，或用滑鼠滾輪縮放；雙擊重設。縮放或放置游標會凍結畫面，擷取與錄製不受影響。游標模式也可用左右方向鍵移動。
@@ -277,7 +283,8 @@
         <article class="panel">
           <h3>訊號統計</h3>
           <p class="muted">
-            統計範圍為本次擷取起點至今；RMS 為未去除 DC 的均方根。
+            純量統計範圍為本次擷取起點至今；RMS 為未去除 DC
+            的均方根。向量計數為幀數；待讀欄對純量為樣本數、向量為封包數。
           </p>
           <div id="statistics" class="table-wrap"></div>
         </article>
@@ -295,6 +302,16 @@
             <label>功能方塊<select id="block-type"></select></label
             ><button class="primary" type="submit">新增方塊</button>
           </form>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <h3>即時訊號鏈</h3>
+            <span id="chain-status" class="muted"></span>
+          </div>
+          <p class="muted">
+            每秒更新接線狀態。數值及縮圖顯示已選擷取的輸出；未監測的輸出會明確標示。
+          </p>
+          <div id="live-chain"></div>
         </article>
         <div id="blocks" class="list empty">尚未新增功能方塊。</div>
       </section>

@@ -84,14 +84,14 @@ http://127.0.0.1:18080
 
 錄製檔位於 `build\daq-web\recordings`。工作台是單人本機應用程式，沒有多使用者登入服務。支援範圍、高速擷取及同步限制詳見 [README.md](README.md)。
 
-## 已建置的舊版升級至量測畫面版
+## 已建置的舊版升級至 TIME／向量修正版
 
-此版沒有修改 C++ bridge 或 SDK，已成功建置過的電腦不必重新編譯：
+此版修改了 C++ bridge 的 TIME 與向量 reader；需要重新執行建置，但可重用既有 SDK 編譯結果：
 
 1. 在後端視窗按 Ctrl+C，先結束錄製並停止工作台。
 2. 從 `daq-web-workstation` 分支下載新版 ZIP，解壓到另一個暫存目錄。
 3. 先備份原本的 `examples\applications\daq_web` 資料夾，再將新版同名資料夾中的內容複製進去並覆蓋。保留原本專案的 `build` 目錄，裡面含執行檔、Python 環境與錄製檔；不需要搬移或刪除它。
-4. 在原本專案根目錄執行 `examples\applications\daq_web\start_windows.cmd`。
+4. 在原本專案根目錄，以 **x64 Native Tools Command Prompt for VS 2022** 執行 `examples\applications\daq_web\build_windows.cmd`。成功後再執行 `examples\applications\daq_web\start_windows.cmd`。
 5. 開啟 `http://127.0.0.1:18080`，按 Ctrl+F5 重新載入介面，重新連線 Digibox。
 
 新版預設啟動連接埠為 18080。新增 FFT 使用瀏覽器內建 JavaScript，不需要安裝 NumPy、Node 或其他 Python 套件。
