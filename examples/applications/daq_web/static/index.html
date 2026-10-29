@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>openDAQ 工作台</title>
     <link rel="stylesheet" href="/style.css" />
+    <script src="/analysis.js" defer></script>
     <script src="/app.js" defer></script>
   </head>
   <body>
@@ -128,13 +129,24 @@
         <div class="intro">
           <h2>看見每一段訊號。</h2>
           <p>
-            最多選擇 16 個純量數值訊號。畫面保留各訊號最近 2,000 筆資料；CSV
+            最多選擇 16 個純量數值訊號。畫面保留各訊號最近 8,192 筆資料；CSV
             記錄擷取期間讀到的原始樣本。
           </p>
         </div>
         <div class="grid acquisition-grid">
           <article class="panel">
             <h3>訊號來源</h3>
+            <label
+              >搜尋訊號<input
+                id="signal-search"
+                type="search"
+                placeholder="名稱或元件路徑"
+            /></label>
+            <div class="button-row">
+              <button id="select-visible">選取搜尋結果</button
+              ><button id="clear-signals">清除選取</button>
+            </div>
+            <p id="selected-count" class="muted">已選取 0 / 16</p>
             <div id="signals" class="signal-list empty">
               連線裝置後選擇訊號。
             </div>
@@ -142,6 +154,12 @@
               <button id="start" class="primary">開始擷取</button
               ><button id="stop">停止擷取</button>
             </div>
+            <details id="channel-settings" class="channel-settings">
+              <summary>通道設定</summary>
+              <label>裝置通道<select id="channel-target"></select></label>
+              <p class="muted">顯示設備實際提供的屬性；修改前請先停止擷取。</p>
+              <div id="channel-properties" class="table-wrap"></div>
+            </details>
             <hr />
             <h3>CSV 錄製</h3>
             <p class="muted">
@@ -162,9 +180,100 @@
             <p class="muted">
               橫軸為相對各訊號首次樣本的秒數；縱軸自動縮放。不同訊號不保證硬體同步。
             </p>
+            <div class="plot-controls">
+              <label
+                >圖表排列<select id="plot-layout">
+                  <option value="stacked">逐通道排列</option>
+                  <option value="columns">兩欄排列</option>
+                </select></label
+              >
+              <label
+                >顯示時窗<select id="time-window">
+                  <option value="all">全部緩衝資料</option>
+                  <option value="0.1">最近 0.1 秒</option>
+                  <option value="1">最近 1 秒</option>
+                  <option value="5">最近 5 秒</option>
+                  <option value="10">最近 10 秒</option>
+                </select></label
+              >
+              <label
+                >滑鼠工具<select id="plot-tool">
+                  <option value="zoom">拖曳縮放</option>
+                  <option value="a">游標 A</option>
+                  <option value="b">游標 B</option>
+                </select></label
+              >
+              <label
+                >縱軸<select id="y-mode">
+                  <option value="auto">自動範圍</option>
+                  <option value="fixed">固定範圍（所有通道）</option>
+                </select></label
+              >
+              <label
+                >Y 最小<input id="y-min" type="number" step="any" value="-10"
+              /></label>
+              <label
+                >Y 最大<input id="y-max" type="number" step="any" value="10"
+              /></label>
+            </div>
+            <div class="button-row">
+              <button id="reset-view">重設縮放／游標</button>
+            </div>
+            <p class="muted">
+              拖曳框選時間範圍，或用滑鼠滾輪縮放；雙擊重設。縮放或放置游標會凍結畫面，擷取與錄製不受影響。游標模式也可用左右方向鍵移動。
+            </p>
+            <p id="view-status" class="muted" role="status">即時畫面</p>
             <div id="plots" class="empty">選擇訊號並開始擷取以顯示波形。</div>
           </article>
         </div>
+        <article class="panel spectrum-panel">
+          <div class="panel-head">
+            <h3>FFT 頻譜</h3>
+            <span class="badge">單邊峰值振幅</span>
+          </div>
+          <div class="plot-controls">
+            <label>分析訊號<select id="spectrum-signal"></select></label>
+            <label
+              >FFT 樣本數<select id="fft-size">
+                <option>512</option>
+                <option selected>1024</option>
+                <option>2048</option>
+                <option>4096</option>
+                <option>8192</option>
+              </select></label
+            >
+            <label
+              >窗函數<select id="fft-window">
+                <option value="hann">Hann</option>
+                <option value="rectangular">矩形窗</option>
+              </select></label
+            >
+            <label
+              >振幅顯示<select id="fft-scale">
+                <option value="linear">線性</option>
+                <option value="db">dB（相對 1 單位）</option>
+              </select></label
+            >
+            <label class="checkbox-label"
+              ><input type="checkbox" id="fft-dc" checked />移除 DC</label
+            >
+          </div>
+          <p id="spectrum-status" class="muted" role="status">
+            開始擷取後顯示頻譜。
+          </p>
+          <canvas
+            id="spectrum-canvas"
+            aria-label="FFT 頻譜"
+            role="img"
+            hidden
+          ></canvas>
+          <p class="muted">
+            以最近 N
+            筆原始樣本估計取樣率，校正窗函數的振幅增益；非等間隔、缺失資料不計算
+            FFT。峰值為頻率格點結果，非內插估計。這不是
+            PSD，也不是硬體同步驗證。
+          </p>
+        </article>
         <article class="panel">
           <h3>訊號統計</h3>
           <p class="muted">

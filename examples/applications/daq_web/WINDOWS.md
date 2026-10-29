@@ -66,10 +66,10 @@ examples\applications\daq_web\start_windows.cmd
 啟動後，保持視窗開啟，在此 Windows 電腦的瀏覽器輸入：
 
 ```
-http://127.0.0.1:8080
+http://127.0.0.1:18080
 ```
 
-日後可直接執行 `start_windows.cmd`，不必每次重新建置。若 TCP 8080 已被其他應用程式使用，可參閱 README 的 `server.py --port` 參數改用其他連接埠。
+日後可直接執行 `start_windows.cmd`，不必每次重新建置。若 TCP 18080 被保留或使用，可執行 `examples\applications\daq_web\start_windows.cmd 18081` 選擇另一個連接埠。
 
 ## 5. 測試 Digibox：169.254.27.27
 
@@ -83,3 +83,15 @@ http://127.0.0.1:8080
 若 Windows 防火牆詢問 SDK bridge 的網路存取，依實際網路設定允許它在設備所在網路通訊，不必關閉整個防火牆。網路探索通常需要同網段的 multicast；掃描失敗不代表直接連線一定失敗。
 
 錄製檔位於 `build\daq-web\recordings`。工作台是單人本機應用程式，沒有多使用者登入服務。支援範圍、高速擷取及同步限制詳見 [README.md](README.md)。
+
+## 已建置的舊版升級至量測畫面版
+
+此版沒有修改 C++ bridge 或 SDK，已成功建置過的電腦不必重新編譯：
+
+1. 在後端視窗按 Ctrl+C，先結束錄製並停止工作台。
+2. 從 `daq-web-workstation` 分支下載新版 ZIP，解壓到另一個暫存目錄。
+3. 先備份原本的 `examples\applications\daq_web` 資料夾，再將新版同名資料夾中的內容複製進去並覆蓋。保留原本專案的 `build` 目錄，裡面含執行檔、Python 環境與錄製檔；不需要搬移或刪除它。
+4. 在原本專案根目錄執行 `examples\applications\daq_web\start_windows.cmd`。
+5. 開啟 `http://127.0.0.1:18080`，按 Ctrl+F5 重新載入介面，重新連線 Digibox。
+
+新版預設啟動連接埠為 18080。新增 FFT 使用瀏覽器內建 JavaScript，不需要安裝 NumPy、Node 或其他 Python 套件。

@@ -154,7 +154,7 @@ class WorkstationTests(unittest.TestCase):
         self.assertEqual(self.request('/api/command', [1, 2, 3])[0], 400)
 
     def test_04_frontend_assets_and_session(self):
-        for path in ['/', '/style.css', '/app.js', '/api/session', '/api/live']:
+        for path in ['/', '/style.css', '/app.js', '/analysis.js', '/api/session', '/api/live']:
             with self.subTest(path=path):
                 code, body = self.request(path)
                 self.assertEqual(code, 200)

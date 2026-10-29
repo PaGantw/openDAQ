@@ -16,3 +16,11 @@ if (OPENDAQ_ENABLE_TESTS AND DAQMODULES_REF_DEVICE_MODULE AND DAQMODULES_REF_FB_
         endif()
     endif()
 endif()
+
+if (OPENDAQ_ENABLE_TESTS)
+    find_program(DAQ_WEB_NODE_EXECUTABLE NAMES node)
+    if (DAQ_WEB_NODE_EXECUTABLE)
+        add_test(NAME test_daq_web_analysis
+            COMMAND ${DAQ_WEB_NODE_EXECUTABLE} --test ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_analysis.cjs)
+    endif()
+endif()

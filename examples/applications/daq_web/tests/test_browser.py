@@ -54,7 +54,7 @@ with sync_playwright() as pw:
     page.locator('#record-start').click()
     wait('live.recording && live.recording.rows > 20')
     page.screenshot(path=str(a.output / 'acquisition.png'), full_page=True)
-    assert page.locator('canvas').count() == 1
+    assert page.locator('.wave-canvas').count() == 1
     page.locator('#record-stop').click()
     wait('!busy && !live.recording && live.recordings.length > 0')
     page.locator('#stop').click()

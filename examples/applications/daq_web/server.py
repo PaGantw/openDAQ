@@ -175,7 +175,7 @@ class Station:
                     raise ValueError('Select 1–16 scalar numeric signals')
                 self.bridge.call('subscribe', signals=selected)
                 self.selected = selected
-                self.series = {sid: {'points': collections.deque(maxlen=2000), 'count': 0,
+                self.series = {sid: {'points': collections.deque(maxlen=8192), 'count': 0,
                                      'finiteCount': 0, 'mean': 0.0, 'squareMean': 0.0,
                                      'min': None, 'max': None, 'firstTick': None,
                                      'origin': '', 'pending': 0} for sid in selected}
@@ -266,6 +266,7 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 files = {'/': ('index.html', 'text/html; charset=utf-8'),
                          '/app.js': ('app.js', 'text/javascript; charset=utf-8'),
+                         '/analysis.js': ('analysis.js', 'text/javascript; charset=utf-8'),
                          '/style.css': ('style.css', 'text/css; charset=utf-8')}
                 if path not in files:
                     raise FileNotFoundError()
@@ -319,7 +320,11 @@ def main():
     station = Station(Bridge(args.bridge.resolve(), args.modules.resolve()), args.recordings)
     try:
         station.command('state', {})  # Fail startup if the source-built SDK cannot initialize.
-        server = ThreadingHTTPServer((args.host, args.port), Handler)
+        try:
+            server = ThreadingHTTPServer((args.host, args.port), Handler)
+        except OSError as exc:
+            raise SystemExit(f'Cannot listen on {args.host}:{args.port}: {exc}. '
+                             'Choose another --port (for example 18080 or 18081).') from None
         server.station, server.token = station, secrets.token_urlsafe(32)
         print(f'DAQ workstation listening on {args.host}:{server.server_port}', flush=True)
         signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))

@@ -15,6 +15,9 @@ let token = "",
   busy = false,
   paused = false,
   currentComponent = "";
+let frozenSeries = [];
+const viewRanges = new Map(),
+  plotCursors = new Map();
 function el(tag, text, cls) {
   const n = document.createElement(tag);
   if (text !== undefined) n.textContent = text;
@@ -60,6 +63,11 @@ function updateButtons() {
   $("record-stop").disabled = busy || !live.recording;
   $("scan").disabled = busy || live.running;
   $("load-config").disabled = busy || live.running;
+  $("select-visible").disabled = busy || !!live.running;
+  $("clear-signals").disabled = busy || !!live.running;
+  document
+    .querySelectorAll("[data-property-save]")
+    .forEach((b) => (b.disabled = busy || !!live.running));
 }
 function showTab(id) {
   document
@@ -108,6 +116,7 @@ async function refresh() {
     selector.value = currentComponent;
   currentComponent = selector.value;
   if (currentComponent) await properties();
+  await renderChannelSettings();
   $("updated").textContent =
     "SDK 狀態已更新 · " + new Date().toLocaleTimeString();
 }
@@ -137,33 +146,96 @@ function renderDevices() {
     box.append(row);
   }
 }
+function filteredSignals() {
+  const query = $("signal-search").value.toLocaleLowerCase().trim();
+  return state.signals.filter((s) =>
+    (s.name + " " + s.id).toLocaleLowerCase().includes(query),
+  );
+}
 function renderSignals() {
   const box = $("signals");
   box.replaceChildren();
   box.classList.remove("empty");
-  for (const s of state.signals) {
-    const label = el("label", undefined, "signal-option"),
+  for (const s of filteredSignals()) {
+    const row = el("div", undefined, "signal-row"),
+      label = el("label", undefined, "signal-option"),
       check = el("input");
     check.type = "checkbox";
     check.checked = selected.has(s.id);
     check.disabled = !!live.running;
     check.onchange = () => {
+      if (check.checked && selected.size >= 16) {
+        check.checked = false;
+        notice("最多選擇 16 個訊號。", true);
+        return;
+      }
       if (check.checked) selected.add(s.id);
       else selected.delete(s.id);
+      $("selected-count").textContent = `已選取 ${selected.size} / 16`;
     };
-    const text = el("span", s.name + (s.unit ? ` · ${s.unit}` : ""));
+    const text = el("span", s.name + (s.unit ? " · " + s.unit : ""));
     text.append(el("small", s.id));
     label.append(check, text);
-    box.append(label);
+    const settings = button("設定", async () => {
+      const owner = state.nodes
+        .filter((n) => n.kind === "channel" && s.id.startsWith(n.id + "/"))
+        .sort((a, b) => b.id.length - a.id.length)[0];
+      if (owner) {
+        $("channel-target").value = owner.id;
+        $("channel-settings").open = true;
+        await properties(owner.id, $("channel-properties"));
+      } else {
+        currentComponent = s.id;
+        $("component").value = s.id;
+        showTab("devices");
+        await properties();
+      }
+    });
+    settings.setAttribute("aria-label", s.name + " 通道設定");
+    row.append(label, settings);
+    box.append(row);
   }
-  if (!state.signals.length) {
+  $("selected-count").textContent = `已選取 ${selected.size} / 16`;
+  if (!box.childNodes.length) {
     box.classList.add("empty");
-    box.textContent = "連線裝置後選擇訊號。";
+    box.textContent = state.signals.length
+      ? "沒有符合搜尋的訊號。"
+      : "連線裝置後選擇訊號。";
   }
 }
-async function properties() {
-  if (!currentComponent) return;
-  const result = await api("properties", { id: currentComponent }),
+async function renderChannelSettings() {
+  const selector = $("channel-target"),
+    previous = selector.value;
+  selector.replaceChildren();
+  for (const channel of state.nodes.filter((n) => n.kind === "channel")) {
+    const o = el("option", channel.name + " / " + channel.id);
+    o.value = channel.id;
+    selector.append(o);
+  }
+  if ([...selector.options].some((o) => o.value === previous))
+    selector.value = previous;
+  if (selector.value) await properties(selector.value, $("channel-properties"));
+  else $("channel-properties").textContent = "尚無可用通道。";
+}
+$("channel-target").onchange = () =>
+  action(() => properties($("channel-target").value, $("channel-properties")));
+$("signal-search").oninput = renderSignals;
+$("select-visible").onclick = () => {
+  if (live.running) return;
+  for (const s of filteredSignals()) {
+    if (selected.size >= 16) break;
+    selected.add(s.id);
+  }
+  renderSignals();
+};
+$("clear-signals").onclick = () => {
+  if (live.running) return;
+  selected.clear();
+  renderSignals();
+};
+async function properties(id = currentComponent, target = $("properties")) {
+  if (!id) return;
+  const result = await api("properties", { id }),
     table = el("table"),
     head = el("tr");
   ["屬性", "數值", "操作"].forEach((s) => head.append(el("th", s)));
@@ -223,16 +295,19 @@ async function properties() {
             value = Number(value);
             if (!Number.isFinite(value)) throw Error("數值格式不正確");
           } else if (typeof p.value === "boolean") value = value === "true";
-          await api("set", { id: currentComponent, name: p.name, value });
-          await properties();
+          await api("set", { id, name: p.name, value });
+          await properties(id, target);
           notice(p.name + " 已更新。");
         }),
       );
     }
+    if (controls.querySelector("button"))
+      controls.querySelector("button").dataset.propertySave = "true";
     row.append(name, cell, controls);
     table.append(row);
   }
-  $("properties").replaceChildren(table);
+  target.replaceChildren(table);
+  updateButtons();
 }
 function renderBlocks() {
   const types = $("block-type");
@@ -371,6 +446,7 @@ $("component").onchange = () =>
 $("start").onclick = () =>
   action(async () => {
     live = await api("start", { signals: [...selected] });
+    resumeView();
     renderSignals();
     renderLive();
     notice("擷取已開始。");
@@ -402,11 +478,6 @@ $("block-form").onsubmit = (e) => {
     await refresh();
     notice("功能方塊已建立，請接上輸入訊號。");
   });
-};
-$("pause-plot").onclick = () => {
-  paused = !paused;
-  $("pause-plot").textContent = paused ? "繼續畫面" : "暫停畫面";
-  if (!paused) drawPlots();
 };
 function download(name, text) {
   const url = URL.createObjectURL(
@@ -454,8 +525,8 @@ function renderLive() {
     : "尚未錄製或已結束。";
   const table = el("table"),
     head = el("tr");
-  ["訊號", "筆數", "最小", "最大", "平均", "RMS", "待讀"].forEach((t) =>
-    head.append(el("th", t)),
+  ["訊號", "筆數", "最小", "最大", "峰對峰", "平均", "RMS", "待讀"].forEach(
+    (t) => head.append(el("th", t)),
   );
   table.append(head);
   for (const s of live.series || []) {
@@ -466,6 +537,7 @@ function renderLive() {
       s.count,
       s.min,
       s.max,
+      s.min === null || s.max === null ? null : s.max - s.min,
       s.mean,
       s.rms,
       s.pending,
@@ -502,88 +574,432 @@ function renderLive() {
   if (!paused) drawPlots();
   updateButtons();
 }
+function displaySeries() {
+  return paused ? frozenSeries : live.series || [];
+}
+function freezeView() {
+  if (!paused) frozenSeries = structuredClone(live.series || []);
+  paused = true;
+  $("pause-plot").textContent = "繼續畫面";
+  $("view-status").textContent = "畫面已凍結；擷取與錄製仍持續。";
+}
+function resumeView() {
+  paused = false;
+  frozenSeries = [];
+  viewRanges.clear();
+  plotCursors.clear();
+  $("pause-plot").textContent = "暫停畫面";
+  $("view-status").textContent = "即時畫面";
+  drawPlots();
+}
+function plotRange(series) {
+  const points = series.points || [];
+  if (!points.length) return null;
+  const end = points.at(-1)[0],
+    begin = points[0][0];
+  const duration = $("time-window").value;
+  return (
+    viewRanges.get(series.id) || [
+      duration === "all" ? begin : Math.max(begin, end - Number(duration)),
+      end > begin ? end : begin + 1,
+    ]
+  );
+}
+function chart(canvas, points, range, color, options = {}) {
+  const width = Math.max(220, canvas.clientWidth),
+    height = options.height || 210;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = width * ratio;
+  canvas.height = height * ratio;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(ratio, ratio);
+  const left = 64,
+    right = width - 12,
+    top = 16,
+    bottom = height - 30;
+  const xmin = range[0],
+    xmax = range[1],
+    span = xmax - xmin || 1;
+  const visible = points.filter(
+    (p) => p[0] >= xmin && p[0] <= xmax && Number.isFinite(p[1]),
+  );
+  let ymin = options.ymin,
+    ymax = options.ymax;
+  if (!Number.isFinite(ymin) || !Number.isFinite(ymax)) {
+    ymin = visible.length ? Math.min(...visible.map((p) => p[1])) : -1;
+    ymax = visible.length ? Math.max(...visible.map((p) => p[1])) : 1;
+    const pad = (ymax - ymin) * 0.12 || Math.max(0.1, Math.abs(ymax) * 0.1);
+    ymin -= pad;
+    ymax += pad;
+  }
+  const x = (t) => left + ((t - xmin) / span) * (right - left);
+  const y = (value) =>
+    bottom - ((value - ymin) / (ymax - ymin)) * (bottom - top);
+  ctx.font = "10px system-ui";
+  for (let n = 0; n <= 4; n++) {
+    const yy = top + (n * (bottom - top)) / 4;
+    ctx.strokeStyle = "#e9eff2";
+    ctx.beginPath();
+    ctx.moveTo(left, yy);
+    ctx.lineTo(right, yy);
+    ctx.stroke();
+    ctx.fillStyle = "#6a8491";
+    ctx.fillText((ymax - (n * (ymax - ymin)) / 4).toPrecision(4), 0, yy + 3);
+  }
+  ctx.fillStyle = "#6a8491";
+  ctx.fillText(
+    xmin.toFixed(3) + " " + (options.xunit || "s"),
+    left,
+    height - 8,
+  );
+  const last = xmax.toFixed(3) + " " + (options.xunit || "s");
+  ctx.fillText(
+    last,
+    Math.max(left, right - ctx.measureText(last).width),
+    height - 8,
+  );
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(left, top, right - left, bottom - top);
+  ctx.clip();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  let begun = false;
+  for (const p of points) {
+    if (!Number.isFinite(p[1])) {
+      begun = false;
+      continue;
+    }
+    if (p[0] < xmin || p[0] > xmax) continue;
+    if (begun) ctx.lineTo(x(p[0]), y(p[1]));
+    else {
+      ctx.moveTo(x(p[0]), y(p[1]));
+      begun = true;
+    }
+  }
+  ctx.stroke();
+  for (const [name, point] of Object.entries(options.cursors || {})) {
+    if (!point || point[0] < xmin || point[0] > xmax) continue;
+    ctx.strokeStyle = name === "a" ? "#d75c32" : "#8054aa";
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    ctx.moveTo(x(point[0]), top);
+    ctx.lineTo(x(point[0]), bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.beginPath();
+    ctx.arc(x(point[0]), y(point[1]), 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillText(name.toUpperCase(), x(point[0]) + 5, top + 12);
+  }
+  if (options.drag) {
+    ctx.fillStyle = "#0784a02a";
+    ctx.fillRect(
+      x(options.drag[0]),
+      top,
+      x(options.drag[1]) - x(options.drag[0]),
+      bottom - top,
+    );
+  }
+  ctx.restore();
+  if (!visible.length) {
+    ctx.fillStyle = "#8095a0";
+    ctx.fillText("此時窗沒有可顯示的資料", left + 8, top + 35);
+  }
+  return {
+    left,
+    right,
+    timeAt: (pixel) =>
+      xmin + Math.max(0, Math.min(1, (pixel - left) / (right - left))) * span,
+  };
+}
+function cursorText(readout, series, unit) {
+  const cursors = plotCursors.get(series.id) || {},
+    parts = [];
+  for (const key of ["a", "b"])
+    if (cursors[key])
+      parts.push(
+        `${key.toUpperCase()}: ${cursors[key][0].toFixed(6)} s / ${fmt(cursors[key][1])} ${unit}`,
+      );
+  if (cursors.a && cursors.b) {
+    const dt = cursors.b[0] - cursors.a[0],
+      dv = cursors.b[1] - cursors.a[1];
+    parts.push(
+      `Δt ${dt.toFixed(6)} s · ΔY ${fmt(dv)} ${unit} · 1/|Δt| ${dt ? fmt(1 / Math.abs(dt)) + " Hz" : "—"}`,
+    );
+  }
+  readout.textContent = parts.join("  |  ") || "尚未放置游標";
+}
+function attachPlot(canvas, readout, series, unit, range, color, yOptions) {
+  let drag = null,
+    geometry;
+  const paint = () => {
+    geometry = chart(canvas, series.points, range, color, {
+      ...yOptions,
+      cursors: plotCursors.get(series.id),
+      drag: drag ? [drag.time, drag.current] : null,
+    });
+    cursorText(readout, series, unit);
+  };
+  const position = (e) => e.clientX - canvas.getBoundingClientRect().left;
+  function cursor(time) {
+    const key = $("plot-tool").value;
+    if (key === "zoom") return;
+    const points = series.points.filter(
+      (p) => p[0] >= range[0] && p[0] <= range[1],
+    );
+    const point = DAQAnalysis.nearest(points, time);
+    if (point) {
+      const c = plotCursors.get(series.id) || {};
+      c[key] = point;
+      plotCursors.set(series.id, c);
+      paint();
+    }
+  }
+  paint();
+  canvas.onpointerdown = (e) => {
+    if (e.button !== 0) return;
+    freezeView();
+    canvas.focus();
+    if ($("plot-tool").value !== "zoom") {
+      cursor(geometry.timeAt(position(e)));
+      return;
+    }
+    const pixel = position(e);
+    drag = {
+      pixel,
+      time: geometry.timeAt(pixel),
+      current: geometry.timeAt(pixel),
+    };
+    canvas.setPointerCapture(e.pointerId);
+  };
+  canvas.onpointermove = (e) => {
+    if (drag) {
+      drag.current = geometry.timeAt(position(e));
+      paint();
+    }
+  };
+  canvas.onpointerup = (e) => {
+    if (!drag) return;
+    const start = drag;
+    drag = null;
+    if (canvas.hasPointerCapture(e.pointerId))
+      canvas.releasePointerCapture(e.pointerId);
+    if (
+      Math.abs(position(e) - start.pixel) > 5 &&
+      Math.abs(start.current - start.time) > 0
+    ) {
+      viewRanges.set(series.id, [
+        Math.min(start.time, start.current),
+        Math.max(start.time, start.current),
+      ]);
+      drawPlots();
+    } else paint();
+  };
+  canvas.onpointercancel = () => {
+    drag = null;
+    paint();
+  };
+  canvas.onwheel = (e) => {
+    e.preventDefault();
+    freezeView();
+    const center = geometry.timeAt(position(e)),
+      factor = e.deltaY > 0 ? 1.35 : 1 / 1.35;
+    const lower = series.points[0]?.[0] ?? range[0],
+      upper = series.points.at(-1)?.[0] ?? range[1];
+    const lo = Math.max(lower, center - (center - range[0]) * factor),
+      hi = Math.min(upper, center + (range[1] - center) * factor);
+    const step =
+      series.points.length > 1
+        ? (upper - lower) / (series.points.length - 1)
+        : 1;
+    if (hi - lo >= step * 2) {
+      viewRanges.set(series.id, [lo, hi]);
+      drawPlots();
+    }
+  };
+  canvas.ondblclick = () => {
+    viewRanges.delete(series.id);
+    plotCursors.delete(series.id);
+    drawPlots();
+  };
+  canvas.onkeydown = (e) => {
+    if (
+      !["ArrowLeft", "ArrowRight"].includes(e.key) ||
+      $("plot-tool").value === "zoom"
+    )
+      return;
+    e.preventDefault();
+    freezeView();
+    const points = series.points.filter(
+      (p) => p[0] >= range[0] && p[0] <= range[1] && Number.isFinite(p[1]),
+    );
+    if (!points.length) return;
+    const key = $("plot-tool").value,
+      current = plotCursors.get(series.id)?.[key];
+    let i = current
+      ? points.findIndex((p) => p[0] === current[0])
+      : Math.floor(points.length / 2);
+    i = Math.max(
+      0,
+      Math.min(points.length - 1, i + (e.key === "ArrowRight" ? 1 : -1)),
+    );
+    cursor(points[i][0]);
+  };
+}
 function drawPlots() {
   if (!$("acquisition").classList.contains("active")) return;
   const box = $("plots");
   box.replaceChildren();
   box.classList.remove("empty");
-  (live.series || []).forEach((s, i) => {
-    const wrap = el("div", undefined, "plot"),
-      label = el("div", undefined, "plot-label"),
-      signal = state.signals.find((x) => x.id === s.id),
-      canvas = el("canvas");
-    label.append(
-      el(
-        "strong",
-        (signal?.name || s.id) + (signal?.unit ? " / " + signal.unit : ""),
-      ),
-      el("span", `${s.count.toLocaleString()} samples`),
-    );
-    wrap.append(label, canvas);
-    box.append(wrap);
-    const width = Math.max(200, canvas.clientWidth),
-      height = 180,
-      ratio = window.devicePixelRatio || 1;
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-    const ctx = canvas.getContext("2d");
-    ctx.scale(ratio, ratio);
-    const pts = s.points || [],
-      finite = pts.filter((p) => p[1] !== null && Number.isFinite(p[1]));
-    if (!finite.length) {
-      ctx.fillStyle = "#8fa3ad";
-      ctx.fillText("等待訊號資料…", 48, 80);
+  box.classList.toggle("plot-columns", $("plot-layout").value === "columns");
+  let yOptions = {};
+  if ($("y-mode").value === "fixed") {
+    const ymin = Number($("y-min").value),
+      ymax = Number($("y-max").value);
+    if (
+      !$("y-min").value.trim() ||
+      !$("y-max").value.trim() ||
+      !Number.isFinite(ymin) ||
+      !Number.isFinite(ymax) ||
+      ymin >= ymax
+    ) {
+      $("view-status").textContent =
+        "縱軸設定無效：請輸入有限數值，且 Y 最小必須小於 Y 最大。";
+      drawSpectrum();
       return;
     }
-    let ymin = Math.min(...finite.map((p) => p[1])),
-      ymax = Math.max(...finite.map((p) => p[1]));
-    const pad = (ymax - ymin) * 0.12 || Math.max(0.1, Math.abs(ymax) * 0.1);
-    ymin -= pad;
-    ymax += pad;
-    const xmin = pts[0][0],
-      xmax = pts.at(-1)[0],
-      xr = xmax - xmin || 1;
-    ctx.font = "10px system-ui";
-    for (let n = 0; n < 5; n++) {
-      const y = 12 + n * 34;
-      ctx.strokeStyle = "#e9eff2";
-      ctx.beginPath();
-      ctx.moveTo(54, y);
-      ctx.lineTo(width - 10, y);
-      ctx.stroke();
-      ctx.fillStyle = "#7f959f";
-      ctx.fillText((ymax - ((ymax - ymin) * n) / 4).toPrecision(3), 0, y + 3);
-    }
-    ctx.strokeStyle = colors[i % colors.length];
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    let begun = false;
-    for (const p of pts) {
-      if (p[1] === null) {
-        begun = false;
-        continue;
-      }
-      const x = 54 + ((p[0] - xmin) / xr) * (width - 66),
-        y = 12 + ((ymax - p[1]) / (ymax - ymin)) * 136;
-      if (begun) ctx.lineTo(x, y);
-      else {
-        ctx.moveTo(x, y);
-        begun = true;
-      }
-    }
-    ctx.stroke();
-    ctx.fillStyle = "#7f959f";
-    ctx.fillText(xmin.toFixed(3) + " s", 54, 170);
-    ctx.fillText(xmax.toFixed(3) + " s", Math.max(54, width - 65), 170);
+    yOptions = { ymin, ymax };
+  }
+  $("view-status").textContent = paused
+    ? "畫面已凍結；擷取與錄製仍持續。"
+    : "即時畫面";
+  displaySeries().forEach((s, i) => {
+    const wrap = el("div", undefined, "plot"),
+      label = el("div", undefined, "plot-label"),
+      canvas = el("canvas"),
+      readout = el("p", undefined, "cursor-readout");
+    const signal = state.signals.find((x) => x.id === s.id),
+      unit = signal?.unit || "";
+    label.append(
+      el("strong", (signal?.name || s.id) + (unit ? " / " + unit : "")),
+      el("span", `${s.count.toLocaleString()} samples`),
+    );
+    canvas.className = "wave-canvas";
+    canvas.tabIndex = 0;
+    canvas.dataset.signal = s.id;
+    canvas.setAttribute("role", "img");
+    canvas.setAttribute(
+      "aria-label",
+      (signal?.name || s.id) + " 波形，使用工具列選擇縮放或游標",
+    );
+    readout.setAttribute("role", "status");
+    wrap.append(label, canvas, readout);
+    box.append(wrap);
+    const range = plotRange(s);
+    if (range)
+      attachPlot(
+        canvas,
+        readout,
+        s,
+        unit,
+        range,
+        colors[i % colors.length],
+        yOptions,
+      );
+    else readout.textContent = "等待訊號資料…";
   });
   if (!box.childNodes.length) {
     box.classList.add("empty");
     box.textContent = "選擇訊號並開始擷取以顯示波形。";
   }
+  drawSpectrum();
 }
-window.addEventListener("resize", () => {
-  if (!paused) drawPlots();
-});
+function drawSpectrum() {
+  const selector = $("spectrum-signal"),
+    series = displaySeries(),
+    previous = selector.value;
+  const keys = series.map((s) => s.id).join("\n");
+  if (selector.dataset.keys !== keys) {
+    selector.replaceChildren();
+    for (const s of series) {
+      const signal = state.signals.find((x) => x.id === s.id),
+        o = el("option", signal?.name || s.id);
+      o.value = s.id;
+      selector.append(o);
+    }
+    if (series.some((s) => s.id === previous)) selector.value = previous;
+    selector.dataset.keys = keys;
+  }
+  const s = series.find((s) => s.id === selector.value),
+    canvas = $("spectrum-canvas"),
+    status = $("spectrum-status");
+  if (!s) {
+    canvas.hidden = true;
+    status.textContent = "開始擷取後顯示頻譜。";
+    return;
+  }
+  const result = DAQAnalysis.spectrum(
+    s.points,
+    Number($("fft-size").value),
+    $("fft-window").value,
+    $("fft-dc").checked,
+  );
+  if (result.error) {
+    canvas.hidden = true;
+    status.textContent = result.error;
+    delete status.dataset.peak;
+    return;
+  }
+  const unit = state.signals.find((x) => x.id === s.id)?.unit || "unit",
+    db = $("fft-scale").value === "db";
+  const points = db
+    ? result.bins.map(([f, a]) => [f, 20 * Math.log10(Math.max(a, 1e-12))])
+    : result.bins;
+  canvas.hidden = false;
+  chart(canvas, points, [0, result.sampleRate / 2], "#8054aa", {
+    xunit: "Hz",
+    height: 260,
+    ...(db
+      ? {}
+      : {
+          ymin: 0,
+          ymax: Math.max(...result.bins.map((p) => p[1])) * 1.12 || 1,
+        }),
+  });
+  status.dataset.peak = String(result.peakFrequency ?? "");
+  status.dataset.sampleRate = String(result.sampleRate);
+  status.textContent = `Fs ${fmt(result.sampleRate)} Hz · N ${result.size} · Δf ${fmt(result.resolution)} Hz · 峰值 ${result.peakFrequency === null ? "—" : fmt(result.peakFrequency) + " Hz"} / ${fmt(result.peakAmplitude)} ${unit}（峰值，非 RMS） · ${db ? "顯示 dB re 1 " + unit : "線性振幅 / " + unit}`;
+}
+$("pause-plot").onclick = () => {
+  if (paused) resumeView();
+  else {
+    freezeView();
+    drawPlots();
+  }
+};
+for (const id of ["plot-layout", "time-window", "y-mode", "y-min", "y-max"])
+  $(id).onchange = () => {
+    if (id === "time-window") viewRanges.clear();
+    drawPlots();
+  };
+for (const id of [
+  "spectrum-signal",
+  "fft-size",
+  "fft-window",
+  "fft-scale",
+  "fft-dc",
+])
+  $(id).onchange = drawSpectrum;
+$("reset-view").onclick = () => {
+  viewRanges.clear();
+  plotCursors.clear();
+  drawPlots();
+};
+window.addEventListener("resize", drawPlots);
+
 async function poll() {
   try {
     const response = await fetch("/api/live");
