@@ -34,6 +34,8 @@ examples\applications\daq_web\build_windows.cmd
 
 腳本會檢查 C++、Git、Python，建立隔離的工具環境，安裝 CMake 3.31.10／Ninja 1.13.0，並編譯 SDK bridge、Native／OPC UA／WebSocket 客戶端與參考模組。依賴下載與 C++ 編譯可能需要一段時間；以最後出現 `Build succeeded` 為完成依據。
 
+Windows 的 Boost 1.82.0 會先經原本的 SHA256 校驗，再使用 Python 的安全 tar 解壓縮功能，透過 `FETCHCONTENT_SOURCE_DIR_BOOST` 交給 CMake。若先前 CMake 已下載同一份 Boost 壓縮檔，腳本會重用該檔案，不必重新下載。
+
 成功後應有：
 
 ```
@@ -41,6 +43,17 @@ build\daq-web\bin\daq_web_bridge.exe
 ```
 
 若失敗，保留視窗，提供「第一個錯誤」及最後約 30 行訊息。不要停用 TLS、檔案 checksum 或修改 SDK 原始碼來略過建置錯誤。
+
+### 舊版腳本：Boost `Invalid empty pathname`
+
+若紀錄顯示 Boost 已下載、校驗完成，但 CMake 解壓縮出現 `archive_write_header(): Invalid empty pathname`，請在 repository 根目錄的開發者命令提示字元更新建置腳本後重跑：
+
+```bat
+curl.exe -fL https://raw.githubusercontent.com/PaGantw/openDAQ/daq-web-workstation/examples/applications/daq_web/build.py -o examples\applications\daq_web\build.py
+examples\applications\daq_web\build_windows.cmd
+```
+
+只有第一行下載成功後再執行第二行。若 repository 權限阻止直接下載，可從 GitHub 分支下載新版 ZIP，取出其中的 `examples\applications\daq_web\build.py` 覆蓋舊檔。無需刪除整個 build 目錄或重新安裝 Visual Studio。ZIP 建置時 `not a git repository` 警告不會造成這個解壓縮錯誤。
 
 ## 4. 啟動工作台
 
