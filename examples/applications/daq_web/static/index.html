@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>openDAQ 工作台</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <aside>
+      <div class="brand">
+        <span class="logo">◒</span>
+        <div>openDAQ<span class="subbrand">ACQUISITION WORKSTATION</span></div>
+      </div>
+      <nav aria-label="主選單">
+        <button class="nav active" data-tab="devices">
+          01 <span>裝置與連線</span></button
+        ><button class="nav" data-tab="acquisition">
+          02 <span>擷取與波形</span></button
+        ><button class="nav" data-tab="processing">
+          03 <span>訊號處理</span></button
+        ><button class="nav" data-tab="configuration">
+          04 <span>組態與紀錄</span>
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="dot"></span> SOURCE-BUILT SDK<br /><small
+          >實際裝置 · 即時資料 · 原始時間戳</small
+        >
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">MEASUREMENT / CONTROL</p>
+          <h1 id="page-title">裝置與連線</h1>
+        </div>
+        <div class="status">
+          <span id="run-dot" class="dot"></span><span id="run-status">待命</span
+          ><span id="record-status"></span>
+        </div>
+      </header>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="devices" class="tab active">
+        <div class="intro">
+          <h2>讓量測從連線開始。</h2>
+          <p>
+            探索 openDAQ
+            裝置，或直接輸入裝置的連線字串。掃描與連線由後端所在的電腦執行。
+          </p>
+        </div>
+        <div class="grid">
+          <article class="panel">
+            <div class="panel-head">
+              <h3>探索裝置</h3>
+              <button id="scan" class="primary">掃描裝置</button>
+            </div>
+            <p class="muted">
+              網路探索通常需要與裝置位於相同網段。參考裝置會明確標示。
+            </p>
+            <div id="discovered" class="list empty">
+              按下掃描以尋找可用裝置。
+            </div>
+          </article>
+          <article class="panel">
+            <h3>直接連線</h3>
+            <form id="connect-form">
+              <label
+                >通訊協定<select id="protocol">
+                  <option value="daq.nd://">原生協定 Native</option>
+                  <option value="daq.opcua://">OPC UA</option>
+                  <option value="daq.lt://">WebSocket LT</option>
+                  <option value="custom">自訂完整連線字串</option>
+                </select></label
+              ><label
+                >IP／主機名稱<input
+                  id="address"
+                  value="169.254.27.27"
+                  autocomplete="off"
+                  required
+              /></label>
+              <details>
+                <summary>裝置登入（選用）</summary>
+                <label
+                  >使用者名稱<input
+                    id="username"
+                    autocomplete="username" /></label
+                ><label
+                  >密碼<input
+                    id="password"
+                    type="password"
+                    autocomplete="current-password"
+                /></label>
+                <p class="muted">
+                  僅傳送給 SDK
+                  連線使用，不寫入工作台錄製檔。掃描清單的連線按鈕也會使用此設定。
+                </p>
+              </details>
+              <p id="connection-preview" class="code"></p>
+              <button type="submit" class="primary">連線裝置</button>
+            </form>
+            <p class="muted">
+              169.254.x.x
+              為區域連結位址。請在能直接連到裝置的本機啟動後端。協定必須與裝置服務相符。
+            </p>
+          </article>
+        </div>
+        <article class="panel">
+          <div class="panel-head">
+            <h3>已連線裝置</h3>
+            <button id="refresh">重新整理</button>
+          </div>
+          <div id="connected" class="list empty">尚未連線。</div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <h3>元件屬性</h3>
+            <select id="component" aria-label="選擇元件"></select>
+          </div>
+          <p class="muted">
+            選擇裝置、通道、訊號或功能方塊以檢視屬性。唯讀與複合型別僅供檢視；變更設定前請先停止擷取。
+          </p>
+          <div id="properties" class="table-wrap"></div>
+        </article>
+      </section>
+      <section id="acquisition" class="tab">
+        <div class="intro">
+          <h2>看見每一段訊號。</h2>
+          <p>
+            最多選擇 16 個純量數值訊號。畫面保留各訊號最近 2,000 筆資料；CSV
+            記錄擷取期間讀到的原始樣本。
+          </p>
+        </div>
+        <div class="grid acquisition-grid">
+          <article class="panel">
+            <h3>訊號來源</h3>
+            <div id="signals" class="signal-list empty">
+              連線裝置後選擇訊號。
+            </div>
+            <div class="button-row">
+              <button id="start" class="primary">開始擷取</button
+              ><button id="stop">停止擷取</button>
+            </div>
+            <hr />
+            <h3>CSV 錄製</h3>
+            <p class="muted">
+              需先開始擷取。每個檔案最多 200 萬筆或 256
+              MiB，達上限會自動結束錄製。
+            </p>
+            <div class="button-row">
+              <button id="record-start">開始錄製</button
+              ><button id="record-stop">結束錄製</button>
+            </div>
+            <p id="record-detail" class="muted">尚未錄製。</p>
+          </article>
+          <article class="panel plot-panel">
+            <div class="panel-head">
+              <h3>即時波形</h3>
+              <button id="pause-plot">暫停畫面</button>
+            </div>
+            <p class="muted">
+              橫軸為相對各訊號首次樣本的秒數；縱軸自動縮放。不同訊號不保證硬體同步。
+            </p>
+            <div id="plots" class="empty">選擇訊號並開始擷取以顯示波形。</div>
+          </article>
+        </div>
+        <article class="panel">
+          <h3>訊號統計</h3>
+          <p class="muted">
+            統計範圍為本次擷取起點至今；RMS 為未去除 DC 的均方根。
+          </p>
+          <div id="statistics" class="table-wrap"></div>
+        </article>
+      </section>
+      <section id="processing" class="tab">
+        <div class="intro">
+          <h2>建立你的訊號鏈。</h2>
+          <p>
+            使用 SDK 提供的功能方塊進行縮放、統計、FFT
+            等處理。將訊號接到輸入埠，再於擷取頁選取輸出訊號。
+          </p>
+        </div>
+        <article class="panel">
+          <form id="block-form" class="inline-form">
+            <label>功能方塊<select id="block-type"></select></label
+            ><button class="primary" type="submit">新增方塊</button>
+          </form>
+        </article>
+        <div id="blocks" class="list empty">尚未新增功能方塊。</div>
+      </section>
+      <section id="configuration" class="tab">
+        <div class="intro">
+          <h2>保存量測，延續工作。</h2>
+          <p>
+            匯出 SDK 組態並在下次載入。錄製檔保留原始 domain tick、時間原點與
+            tick 比例。
+          </p>
+        </div>
+        <article class="panel">
+          <h3>工作組態</h3>
+          <div class="button-row">
+            <button id="save-config" class="primary">匯出組態 JSON</button
+            ><label class="file-button"
+              >載入組態<input
+                type="file"
+                id="load-config"
+                accept=".json,application/json"
+            /></label>
+          </div>
+          <p class="muted">
+            載入可能修改裝置與功能方塊設定；請先停止擷取。組態可能含裝置位址等資訊，分享前請檢查內容。
+          </p>
+        </article>
+        <article class="panel">
+          <h3>本次工作錄製檔</h3>
+          <div id="recordings" class="list empty">尚無完成的錄製檔。</div>
+          <p class="muted">
+            結束錄製後即可下載。應用程式重啟後，舊檔仍保留在錄製目錄，請從檔案系統取用。
+          </p>
+        </article>
+        <article class="panel">
+          <h3>操作紀錄</h3>
+          <div id="events" class="event-log"></div>
+        </article>
+        <details class="panel">
+          <summary>SDK 診斷紀錄</summary>
+          <pre id="sdk-logs"></pre>
+        </details>
+      </section>
+      <footer>
+        <span>openDAQ / 工程量測工作台</span><span id="updated">等待 SDK</span>
+      </footer>
+    </main>
+  </body>
+</html>
