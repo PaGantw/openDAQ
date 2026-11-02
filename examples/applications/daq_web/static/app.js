@@ -107,6 +107,7 @@ async function refresh() {
     [...selected].filter((id) => state.signals.some((s) => s.id === id)),
   );
   renderDevices();
+  renderInventory();
   renderSignals();
   renderBlocks();
   renderChain();
@@ -157,6 +158,63 @@ function filteredSignals() {
     (s.name + " " + s.id).toLocaleLowerCase().includes(query),
   );
 }
+function inventorySignals() {
+  const query = $("value-search").value.toLocaleLowerCase().trim();
+  return state.signals.filter((s) =>
+    `${s.name} ${s.id} ${s.unit || ""}`.toLocaleLowerCase().includes(query));
+}
+function renderInventory() {
+  const box = $("value-inventory"), signals = inventorySignals();
+  box.replaceChildren();
+  $("value-count").textContent = `顯示 ${signals.length} / ${state.signals.length} 個訊號（含時間軸與不支援型別）`;
+  if (!signals.length) {
+    box.textContent = state.signals.length ? "沒有符合搜尋的訊號。" : "連線裝置後，這裡會列出可擷取項目。";
+    return;
+  }
+  const table = el("table"), head = el("tr"), body = el("tbody");
+  for (const name of ["名稱", "類型", "單位", "最新收到的值", "狀態", "訊號路徑"]) head.append(el("th", name));
+  const header = el("thead"); header.append(head); table.append(header, body);
+  const statuses = {ok: "已收到資料", no_data: "等待資料", time_axis: "時間軸", vector: "向量，請開啟擷取", unsupported: "不支援預覽", non_finite: "非有限數值", error: "讀取錯誤"};
+  for (const s of signals) {
+    const row = el("tr");
+    for (const value of [s.name, s.kind, s.unit || "—", s.latestValue == null ? "—" : String(s.latestValue), statuses[s.previewStatus] || "尚無預覽", s.id]) row.append(el("td", value));
+    if (s.previewError) row.title = s.previewError;
+    body.append(row);
+  }
+  box.append(table);
+}
+$("value-search").oninput = renderInventory;
+$("export-values").onclick = () => {
+  // Prefix formula-like text before CSV quoting so Excel treats device labels as text.
+  const quote = (value) => {
+    let text = String(value ?? "");
+    if (typeof value === "string" && /^[=+@\-\t\r\n]/.test(text)) text = "'" + text;
+    return '"' + text.replaceAll('"', '""') + '"';
+  };
+  const fields = ["name", "kind", "unit", "latestValue", "previewStatus", "id", "previewError"];
+  const lines = [fields, ...inventorySignals().map((s) => fields.map((key) => s[key]))];
+  const blob = new Blob(["\uFEFF" + lines.map((row) => row.map(quote).join(",")).join("\r\n")], {type: "text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob), link = el("a");
+  link.href = url; link.download = "opendaq-values.csv"; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+$("digibox-reference").addEventListener("toggle", async () => {
+  const box = $("digibox-catalog");
+  if (!$("digibox-reference").open || box.childNodes.length) return;
+  try {
+    const response = await fetch("/digibox-catalog.json");
+    if (!response.ok) throw Error("無法載入手冊對照");
+    const catalog = await response.json(), table = el("table"), header = el("tr");
+    for (const title of ["項目", "物件索引／子索引", "型別", "手冊頁碼", "備註"]) header.append(el("th", title));
+    const thead = el("thead"), body = el("tbody"); thead.append(header); table.append(thead, body);
+    for (const item of catalog.items) {
+      const row = el("tr");
+      for (const key of ["name", "address", "type", "page", "note"]) row.append(el("td", String(item[key] ?? "")));
+      body.append(row);
+    }
+    box.append(table);
+  } catch (e) { notice(e.message, true); }
+});
 function renderSignals() {
   const box = $("signals");
   box.replaceChildren();
@@ -618,6 +676,7 @@ function renderLive() {
   [
     "訊號",
     "筆數／幀數",
+    "樣本時間估計 Hz",
     "最小",
     "最大",
     "峰對峰",
@@ -632,6 +691,8 @@ function renderLive() {
     [
       signal?.name || s.id,
       s.count,
+      s.kind !== "vector" && s.rawPoints?.length > 1 && s.rawPoints.at(-1)[0] > s.rawPoints[0][0]
+        ? (s.rawPoints.length - 1) / (s.rawPoints.at(-1)[0] - s.rawPoints[0][0]) : null,
       s.min,
       s.max,
       s.min === null || s.max === null ? null : s.max - s.min,
@@ -1170,7 +1231,7 @@ async function poll() {
     if (
       !busy &&
       Date.now() - lastChainRefresh > 1000 &&
-      ($("processing").classList.contains("active") || !live.running)
+      ($("processing").classList.contains("active") || $("devices").classList.contains("active") || !live.running)
     ) {
       lastChainRefresh = Date.now();
       const fresh = await api("state");
@@ -1178,6 +1239,7 @@ async function poll() {
         s.signals.map((v) => v.id + ":" + v.kind + ":" + v.readable).join("|");
       const changed = signature(fresh) !== signature(state);
       state = fresh;
+      renderInventory();
       if (changed) renderSignals();
       if ($("processing").classList.contains("active")) renderChain();
     }

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/style.css" />
     <script src="/analysis.js" defer></script>
     <script src="/app.js" defer></script>
+    <script src="/od.js" defer></script>
   </head>
   <body>
     <aside>
@@ -117,6 +118,41 @@
         </article>
         <article class="panel">
           <div class="panel-head">
+            <h3>可擷取數值總覽</h3>
+            <button id="export-values">匯出數值 CSV</button>
+          </div>
+          <p class="muted">列出已連線裝置與功能方塊實際公開的訊號。純量預覽自動更新；「等待資料」不表示數值為零。此處為最新收到的值，並非各通道同步取樣快照。64 位元整數預覽可能四捨五入，精確時間戳請使用原始擷取記錄。</p>
+          <label>搜尋數值<input id="value-search" type="search" placeholder="名稱、單位或訊號路徑" /></label>
+          <p id="value-count" class="muted"></p>
+          <div id="value-inventory" class="table-wrap" aria-live="off"></div>
+        </article>
+        <article class="panel">
+          <h3>digiBOX OD 實際讀值（REST API）</h3>
+          <p class="muted">內建附件 OD 與 OpenAPI 交叉確認的 537 個可讀物件，包含量測、統計、狀態與可讀設定。這些不是 537 路高速串流。由後端電腦連線至設備；每次最多選取 16 項，各項讀值時間不同。OD 數值區只讀取；下方串流來源選單可另外設定來源，不執行重置。</p>
+          <label>裝置 HTTP 位址<input id="od-url" value="http://169.254.27.27" /></label>
+          <h3>openDAQ 高速串流來源</h3>
+          <p class="muted">來源對應由實機確認。此設定是裝置層級的串流來源選擇，並非每個 OD 項目皆可獨立串流。先停止擷取並中斷工作台裝置連線，套用後重新連線，再到「擷取與波形」選取訊號並開始 openDAQ 擷取。下方 OD 輪詢仍是低速趨勢。</p>
+          <label>Streaming Source<select id="stream-source"><option value="1">1 · Field value</option><option value="2">2 · Unfilter value</option><option value="3">3 · Filter 1 value</option><option value="4">4 · Filter 2 value</option><option value="5">5 · Net value</option><option value="6" selected>6 · Final value</option></select></label>
+          <div class="button-row"><button id="stream-source-read">讀取目前串流來源</button><button id="stream-source-apply">套用串流來源</button></div>
+          <p id="stream-source-status" class="muted" role="status">尚未讀取實機設定；選單預設顯示 6，不代表已驗證目前來源。</p>
+          <label>匯入裝置 OD CSV（選用）<input id="od-file" type="file" accept=".csv,text/csv" /></label>
+          <label>搜尋 OD<input id="od-search" type="search" placeholder="例如 peak、capture、sum、0x3010" /></label>
+          <div class="button-row"><button id="od-load">載入物件清單</button><button id="od-read">讀取選取項目</button><button id="od-clear">清除選取</button><button id="od-export">匯出 OD CSV</button></div>
+          <div class="button-row"><button id="od-trend-start">開始 OD 趨勢</button><button id="od-trend-stop">停止 OD 趨勢</button><button id="od-preset-save">匯出參數設定</button></div>
+          <label>匯入參數設定<input id="od-preset-file" type="file" accept=".json" /></label>
+          <label>讀取間隔（秒，完成一輪後等待）<input id="od-interval" type="number" min="0.5" max="60" step="0.5" value="2" /></label>
+          <div id="od-selected" class="table-wrap"></div>
+          <label><input id="od-auto" type="checkbox" /> 持續讀取並更新趨勢圖（切換本工作台分頁仍持續；瀏覽器背景分頁暫停）</label>
+          <p id="od-status" class="muted" role="status">按「載入物件清單」或匯入 OD CSV，選取所需項目後讀取。</p>
+          <div id="od-table" class="table-wrap"></div>
+          <details id="digibox-reference">
+            <summary>digiBOX 手冊可讀項目對照</summary>
+            <p class="muted">手冊第 17.3 節確認 openDAQ 提供裝置探索與 LT 串流，最高每量測通道 40 kS/s。下表為物件字典可讀項目，並不表示全部都會以 openDAQ 訊號公開；完整支援項目與位址以裝置匯出的 Object Dictionary CSV 為準。物件字典可經 REST API、MQTT 或現場匯流排讀取，本版僅提供對照。</p>
+            <div id="digibox-catalog" class="table-wrap"></div>
+          </details>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
             <h3>元件屬性</h3>
             <select id="component" aria-label="選擇元件"></select>
           </div>
@@ -127,6 +163,13 @@
         </article>
       </section>
       <section id="acquisition" class="tab">
+        <article class="panel">
+          <div class="panel-head"><h3>OD 參數趨勢圖</h3><button id="od-chart-stop">停止 OD 趨勢</button><button id="od-history-export">匯出 OD 趨勢 CSV</button><button id="od-history-clear">清除趨勢</button></div>
+          <p id="od-trend-status" role="status">尚未開始 OD 趨勢。</p>
+          <p class="muted">橫軸為後端讀取完成時間相對秒數，非裝置同步取樣時間。僅數值純量與布林值可繪圖；文字、陣列與超出安全整數範圍的值仍可在 OD 表格查看。最多保留每訊號 3,600 筆；關閉頁面後停止讀取，歷史不會保留。</p>
+          <label>顯示時窗<select id="od-window"><option value="60">最近 60 秒</option><option value="300">最近 5 分鐘</option><option value="1800">最近 30 分鐘</option><option value="all">全部保留資料</option></select></label>
+          <div id="od-plots"></div>
+        </article>
         <div class="intro">
           <h2>看見每一段訊號。</h2>
           <p>
