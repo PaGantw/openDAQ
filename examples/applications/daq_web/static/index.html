@@ -117,6 +117,23 @@
         </article>
         <article class="panel">
           <div class="panel-head">
+            <h3>可擷取數值總覽</h3>
+            <button id="export-values">匯出數值 CSV</button>
+          </div>
+          <p class="muted">列出已連線裝置與功能方塊實際公開的訊號。純量預覽自動更新；「等待資料」不表示數值為零。此處為最新收到的值，並非各通道同步取樣快照。64 位元整數預覽可能四捨五入，精確時間戳請使用原始擷取記錄。</p>
+          <label>搜尋數值<input id="value-search" type="search" placeholder="名稱、單位或訊號路徑" /></label>
+          <p id="value-count" class="muted"></p>
+          <div id="value-inventory" class="table-wrap" aria-live="off"></div>
+        </article>
+        <article class="panel">
+          <details id="digibox-reference">
+            <summary>digiBOX 手冊可讀項目對照</summary>
+            <p class="muted">手冊第 17.3 節確認 openDAQ 提供裝置探索與 LT 串流，最高每量測通道 40 kS/s。下表為物件字典可讀項目，並不表示全部都會以 openDAQ 訊號公開；完整支援項目與位址以裝置匯出的 Object Dictionary CSV 為準。物件字典可經 REST API、MQTT 或現場匯流排讀取，本版僅提供對照。</p>
+            <div id="digibox-catalog" class="table-wrap"></div>
+          </details>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
             <h3>元件屬性</h3>
             <select id="component" aria-label="選擇元件"></select>
           </div>

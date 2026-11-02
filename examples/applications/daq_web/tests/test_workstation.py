@@ -78,6 +78,21 @@ class WorkstationTests(unittest.TestCase):
         state = self.call('state')
         self.assertTrue(any(n['id'] == device for n in state['nodes']))
         signal = next(s for s in state['signals'] if s.get('sampleType') in (1, 2))
+        # Inventory preview works before acquisition and does not consume its readers.
+        deadline = time.monotonic() + 8
+        while time.monotonic() < deadline:
+            preview = next(s for s in self.call('state')['signals'] if s['id'] == signal['id'])
+            if preview['previewStatus'] == 'ok':
+                break
+            time.sleep(0.1)
+        self.assertEqual(preview['previewStatus'], 'ok', preview)
+        self.assertIsInstance(preview['latestValue'], (int, float))
+        self.assertFalse(json.loads(self.request('/api/live')[1])['running'])
+        catalog_code, catalog_raw = self.request('/digibox-catalog.json')
+        self.assertEqual(catalog_code, 200)
+        catalog = json.loads(catalog_raw)
+        self.assertTrue(any(item['address'].startswith('0x201E') for item in catalog['items']))
+        self.assertTrue(any('衝突' in item['note'] for item in catalog['items']))
         channels = [n for n in state['nodes'] if n['kind'] == 'channel']
         self.assertTrue(channels)
         props = self.call('properties', id=channels[0]['id'])['properties']

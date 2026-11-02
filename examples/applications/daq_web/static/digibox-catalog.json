@@ -1,0 +1,188 @@
+{
+  "source": "digiBOX Industrial Operating Maunal.pdf",
+  "scope": "手冊主要可讀量測、狀態及部分可讀設定；非完整物件字典，非已偵測的 openDAQ 訊號",
+  "items": [
+    {
+      "name": "系統狀態位元",
+      "address": "0x4200:01",
+      "type": "U32",
+      "page": 157,
+      "note": "Heartbeat、Ready、ETH、串流、MQTT、NTP、PTP 與量測同步等狀態位元"
+    },
+    {
+      "name": "系統錯誤位元",
+      "address": "0x4200:02",
+      "type": "U32",
+      "page": 157,
+      "note": "電源、ADC／類比、DIO、通道激勵等錯誤"
+    },
+    {
+      "name": "系統／通道 LED 模式",
+      "address": "0x4200:05；0x4201:01–04",
+      "type": "U16",
+      "page": 158,
+      "note": "狀態值 0–16"
+    },
+    {
+      "name": "CH1–4 訊號狀態",
+      "address": "0x2010:01–02；0x2011:01–02",
+      "type": "U32",
+      "page": 159,
+      "note": "Valid、ADC error、Overload、Underload；壓電另含量程與 reset 狀態"
+    },
+    {
+      "name": "量測同步來源",
+      "address": "0x1300:01",
+      "type": "U16",
+      "page": 159,
+      "note": "可讀設定值：0 內部時脈；1 PTP；2 Fieldbus"
+    },
+    {
+      "name": "CH1–4 原始平均值",
+      "address": "0x2116:01–04",
+      "type": "FLOAT",
+      "page": 160,
+      "note": "僅供使用者校正；依機型與韌體支援"
+    },
+    {
+      "name": "CH1–4 電氣量／Field value",
+      "address": "0x2014:01–02；0x2015:01–02",
+      "type": "FLOAT",
+      "page": "160、164",
+      "note": "應變規為 mV/V；壓電依裝置描述與量程，不固定套用單位"
+    },
+    {
+      "name": "CH1–4 未濾波工程值",
+      "address": "0x2016:01–02；0x2017:01–02",
+      "type": "FLOAT",
+      "page": "160、164",
+      "note": "使用者比例換算後；單位由裝置／感測器設定決定"
+    },
+    {
+      "name": "CH1–4 第一級濾波值",
+      "address": "0x2018:01–02；0x2019:01–02",
+      "type": "FLOAT",
+      "page": "160、164",
+      "note": "應變規 Gross value／壓電濾波後工程值"
+    },
+    {
+      "name": "CH1–4 歸零偏移值",
+      "address": "0x201C:01–02；0x201D:01–02",
+      "type": "FLOAT",
+      "page": "160–161",
+      "note": "應變規通道；不等同寫入歸零命令"
+    },
+    {
+      "name": "CH1–4 最終量測值",
+      "address": "0x201E:01–02；0x201F:01–02",
+      "type": "FLOAT",
+      "page": "161、164",
+      "note": "應變規：第二級濾波／歸零後；壓電：reset/operate 後"
+    },
+    {
+      "name": "CH1–4 TEDS 狀態／錯誤",
+      "address": "0x5F0F:01–04",
+      "type": "U16",
+      "page": "163–164",
+      "note": "僅應變規通道；TEDS 存在、讀取成功、校驗與讀取錯誤等位元"
+    },
+    {
+      "name": "CH1–4 壓電高量程啟用",
+      "address": "0x2108:01–04",
+      "type": "BOOL",
+      "page": 165,
+      "note": "可讀設定值：0 低量程；1 高量程"
+    },
+    {
+      "name": "CH1–4 壓電硬體 Reset 狀態",
+      "address": "0x2107:01–04",
+      "type": "BOOL",
+      "page": 165,
+      "note": "可讀設定值：0 量測；1 reset 保持"
+    },
+    {
+      "name": "CH1–4 壓電軟體 Reset Hold",
+      "address": "0x210A:01–04",
+      "type": "BOOL",
+      "page": 165,
+      "note": "可讀設定值；本清單不執行 reset"
+    },
+    {
+      "name": "CH1–4 漂移校正進度",
+      "address": "0x2117:01–04",
+      "type": "U32",
+      "page": 166,
+      "note": "讀取已處理樣本數；本清單不寫入觸發校正"
+    },
+    {
+      "name": "峰值功能 1：最大值／最小值／峰對峰",
+      "address": "0x3010:03／04／05",
+      "type": "FLOAT",
+      "page": 168,
+      "note": "功能來源可另行指定，未必等於同編號的實體通道"
+    },
+    {
+      "name": "峰值功能 2：最大值／最小值／峰對峰",
+      "address": "0x3011:03／04／05",
+      "type": "FLOAT",
+      "page": 168,
+      "note": "功能來源可另行指定，未必等於同編號的實體通道"
+    },
+    {
+      "name": "峰值功能 3：最大值／最小值／峰對峰",
+      "address": "0x3012:03／04／05",
+      "type": "FLOAT",
+      "page": 169,
+      "note": "功能來源可另行指定，未必等於同編號的實體通道"
+    },
+    {
+      "name": "峰值功能 4：最大值／最小值／峰對峰",
+      "address": "0x3013:03／04／05",
+      "type": "FLOAT",
+      "page": 169,
+      "note": "功能來源可另行指定，未必等於同編號的實體通道"
+    },
+    {
+      "name": "捕捉值 1–4",
+      "address": "0x2500:01–04",
+      "type": "FLOAT",
+      "page": 170,
+      "note": "觸發時鎖存的量測值；來源依設定"
+    },
+    {
+      "name": "捕捉值狀態 1–4",
+      "address": "0x2505:01–04",
+      "type": "U32",
+      "page": 170,
+      "note": "捕捉功能的狀態"
+    },
+    {
+      "name": "極限開關狀態 1–8",
+      "address": "手冊列 0x3030–0x3037:01（待核對）",
+      "type": "I8",
+      "page": 170,
+      "note": "同手冊第 167 頁將相同位址列為 U16 來源設定，有衝突；實作讀取前須依裝置 CSV 確認"
+    },
+    {
+      "name": "加總值與狀態",
+      "address": "0x2030:01／02",
+      "type": "FLOAT／U32",
+      "page": 171,
+      "note": "加總功能輸出與狀態"
+    },
+    {
+      "name": "加總中心點 X／Y",
+      "address": "0x2030:03／04",
+      "type": "FLOAT",
+      "page": 171,
+      "note": "加總功能的中心點座標"
+    },
+    {
+      "name": "目前使用的 Fieldbus 協定",
+      "address": "0x3F00:05",
+      "type": "U16",
+      "page": 173,
+      "note": "裝置目前啟用的現場匯流排協定"
+    }
+  ]
+}

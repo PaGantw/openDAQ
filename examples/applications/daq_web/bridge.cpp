@@ -47,9 +47,10 @@ class Workstation {
         std::string source;
     };
     std::map<std::string, Subscription> readers;
+    std::map<std::string, TailReaderPtr> previews;
     std::map<std::string, SignalPtr> signals() {
         std::map<std::string,SignalPtr> result;
-        for(const auto& s:instance.getSignalsRecursive()) {
+        for(const auto& s:instance.getSignalsRecursive(search::Any())) {
             result[txt(s.getGlobalId())]=s;
             auto d=s.getDomainSignal();if(d.assigned())result[txt(d.getGlobalId())]=d;
         }
@@ -156,7 +157,11 @@ public:
             J nodes(rapidjson::kArrayType); nodes.PushBack(node(instance,"instance",a),a);
             for(const auto& d:instance.getDevices()) appendDevice(d,nodes,a);
             J signals(rapidjson::kArrayType);
-            for(const auto& entry:this->signals()) {
+            const auto allSignals=this->signals();
+            for(auto it=previews.begin();it!=previews.end();) {
+                if(!allSignals.count(it->first))it=previews.erase(it);else ++it;
+            }
+            for(const auto& entry:allSignals) {
                 const auto& s=entry.second;
                 auto n=node(s,"signal",a); auto dd=s.getDescriptor();
                 auto source=domainSource(entry.first);auto domain=s.getDomainSignal();
@@ -173,6 +178,22 @@ public:
                     put(n,"sampleType",J(static_cast<int>(dd.getSampleType())),a);
                     auto u=dd.getUnit(); put(n,"unit",str(u.assigned()?txt(u.getSymbol()):"",a),a);
                 }
+                put(n,"latestValue",J(),a);
+                std::string previewStatus=kind=="scalar"?"no_data":kind=="time"?"time_axis":kind=="vector"?"vector":"unsupported";
+                if(kind=="scalar") {
+                    try {
+                        auto& preview=previews[entry.first];
+                        if(!preview.assigned())preview=TailReader(s,1,SampleType::Float64,SampleType::Int64);
+                        double value=0;SizeT count=1;
+                        auto status=preview.read(&value,&count);
+                        if(status.assigned()&&!status.getValid())throw std::runtime_error("Preview descriptor changed; retrying on next refresh");
+                        if(count){n["latestValue"]=std::isfinite(value)?J(value):J();previewStatus=std::isfinite(value)?"ok":"non_finite";}
+                    } catch(const std::exception& e) {
+                        previews.erase(entry.first);previewStatus="error";
+                        put(n,"previewError",str(e.what(),a),a);
+                    }
+                } else previews.erase(entry.first);
+                put(n,"previewStatus",str(previewStatus,a),a);
                 signals.PushBack(n,a);
             }
             J blocks(rapidjson::kArrayType);
@@ -207,6 +228,7 @@ public:
             }
             auto d=instance.addDevice(field(req,"connection"),config); put(out,"id",str(txt(d.getGlobalId()),a),a);
         } else if(op=="disconnect") {
+            previews.clear();
             auto d=component(field(req,"id")).asPtr<IDevice>();
             auto id=txt(d.getGlobalId());
             for(auto i=readers.begin();i!=readers.end();) { if(i->first.compare(0,id.size(),id)==0) i=readers.erase(i); else ++i; }
@@ -280,6 +302,7 @@ public:
         } else if(op=="block_add") {
             auto b=instance.addFunctionBlock(field(req,"type")); put(out,"id",str(txt(b.getGlobalId()),a),a);
         } else if(op=="block_remove") {
+            previews.clear();
             readers.clear(); instance.removeFunctionBlock(component(field(req,"id")).asPtr<IFunctionBlock>());
         } else if(op=="port_connect") {
             component(field(req,"port")).asPtr<IInputPort>().connect(component(field(req,"signal")).asPtr<ISignal>());
@@ -288,6 +311,7 @@ public:
         } else if(op=="config_save") {
             put(out,"configuration",str(txt(instance.saveConfiguration()),a),a);
         } else if(op=="config_load") {
+            previews.clear();
             readers.clear(); instance.loadConfiguration(field(req,"configuration"));
         } else if(op=="stop") { readers.clear(); }
         else throw std::runtime_error("Unknown operation: "+op);

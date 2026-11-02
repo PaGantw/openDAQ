@@ -27,7 +27,22 @@ with sync_playwright() as pw:
     wait("!busy && document.querySelector('#discovered').textContent.includes('daqref://device0')")
     page.locator('#discovered .device-row').filter(has_text='daqref://device0').get_by_role('button', name='連線', exact=True).click()
     wait("!busy && state.signals.length > 0")
+    assert page.locator('#notice').get_attribute('class') != 'notice error'
     signal = page.evaluate("state.signals.find(s => s.sampleType === 2 || s.sampleType === 1).id")
+    wait("state.signals.some(s => s.previewStatus === 'ok') && document.querySelector('#value-inventory').textContent.includes('已收到資料')")
+    assert not page.evaluate('live.running'), 'Inventory must work before acquisition'
+    page.locator('#value-search').fill(signal)
+    matches = page.locator('#value-inventory tbody tr').all_inner_texts()
+    assert matches and all(signal in text for text in matches)
+    with page.expect_download() as inventory_download:
+        page.locator('#export-values').click()
+    inventory_download.value.save_as(a.output / 'values.csv')
+    assert signal in (a.output / 'values.csv').read_text(encoding='utf-8-sig')
+    page.locator('#value-search').fill('')
+    page.locator('#digibox-reference summary').click()
+    wait("document.querySelector('#digibox-catalog').textContent.includes('0x201E')")
+    assert '待核對' in page.locator('#digibox-catalog').inner_text()
+    page.screenshot(path=str(a.output / 'inventory.png'), full_page=True)
     # Exercise function-block creation, port wiring and exposed settings through the UI.
     page.locator('[data-tab="processing"]').click()
     page.locator('#block-type').select_option('RefFBModuleScaling')
