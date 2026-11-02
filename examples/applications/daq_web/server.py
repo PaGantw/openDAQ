@@ -14,10 +14,83 @@ import signal
 import subprocess
 import threading
 import time
+import concurrent.futures
+import io
+import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
 ROOT = pathlib.Path(__file__).resolve().parent
+
+
+def od_catalog(text=None):
+    """Import an OD inventory; addresses must also have a documented GET route."""
+    known = json.loads((ROOT / 'static' / 'od-objects.json').read_text(encoding='utf-8'))['items']
+    if text is None:
+        return known
+    if not isinstance(text, str) or len(text) > 1024 * 1024:
+        raise ValueError('OD CSV must be text up to 1 MiB')
+    allowed = {item['id'] for item in known}
+    items = {}
+    for row in csv.DictReader(io.StringIO(text.lstrip('\ufeff'))):
+        if row.get('Access') not in ('RO', 'RW'):
+            continue
+        index = int(row['Index'], 16)
+        subindex = int(row['Subindex'])
+        key = f'{index}:{subindex}'
+        if key in allowed:
+            items[key] = dict(id=key, index=index, subindex=subindex,
+                              name=row['Comment'], type=row['Type'], access=row['Access'])
+    if not items:
+        raise ValueError('CSV contains no readable objects supported by the supplied OpenAPI')
+    return list(items.values())
+
+
+class NoODRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError('OD endpoint redirects are not supported; check device address')
+
+
+def od_read(base_url, ids):
+    url = urlsplit(base_url if isinstance(base_url, str) else '')
+    if (url.scheme not in ('http', 'https') or not url.hostname or url.username or
+            url.password or url.query or url.fragment or url.path not in ('', '/')):
+        raise ValueError('Enter a device origin such as http://169.254.27.27')
+    if not isinstance(ids, list) or not 1 <= len(ids) <= 16 or not all(isinstance(x, str) for x in ids):
+        raise ValueError('Select 1–16 OD objects')
+    known = {item['id']: item for item in od_catalog()}
+    if any(key not in known for key in ids):
+        raise ValueError('Unknown or write-only OD object')
+    origin = f'{url.scheme}://{url.netloc}'
+
+    def read(key):
+        item = known[key]
+        result = dict(id=key, value=None, status='error', error='', observedAt='')
+        try:
+            opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoODRedirect())
+            req = urllib.request.Request(f"{origin}/od/{item['index']}/{item['subindex']}",
+                                         headers={'Accept': 'application/json'})
+            with opener.open(req, timeout=2) as response:
+                raw = response.read(1024 * 1024 + 1)
+            if len(raw) > 1024 * 1024:
+                raise ValueError('OD response exceeds 1 MiB')
+            data = json.loads(raw, parse_constant=lambda value: None)
+            if not isinstance(data, list) or len(data) != 1:
+                raise ValueError('Expected one OD element in response array')
+            element = data[0]
+            if element['index'] != item['index'] or element['subindex'] != item['subindex']:
+                raise ValueError('Response OD address does not match request')
+            value = element['value']['current']
+            # Decimal strings preserve 64-bit integers through browser JSON parsing.
+            if str(element.get('type', '')).upper() in ('I64', 'U64'):
+                value = [str(x) for x in value] if isinstance(value, list) else str(value)
+            result.update(value=value, status='ok', observedAt=dt.datetime.now(dt.timezone.utc).isoformat())
+        except Exception as exc:
+            result['error'] = str(exc)
+        return result
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        return list(executor.map(read, dict.fromkeys(ids)))
 
 
 class Bridge:
@@ -232,6 +305,10 @@ class Station:
                     'sdkLogs': list(self.bridge.logs)[-30:]}
 
     def command(self, op, args):
+        if op == 'od_catalog':
+            return {'items': od_catalog(args.get('csv'))}
+        if op == 'od_read':
+            return {'items': od_read(args.get('url'), args.get('ids'))}
         with self.lock:
             if op == 'start':
                 if self.running:
@@ -332,6 +409,7 @@ class Handler(BaseHTTPRequestHandler):
                          '/app.js': ('app.js', 'text/javascript; charset=utf-8'),
                          '/analysis.js': ('analysis.js', 'text/javascript; charset=utf-8'),
                          '/digibox-catalog.json': ('digibox-catalog.json', 'application/json; charset=utf-8'),
+                         '/od.js': ('od.js', 'text/javascript; charset=utf-8'),
                          '/style.css': ('style.css', 'text/css; charset=utf-8')}
                 if path not in files:
                     raise FileNotFoundError()

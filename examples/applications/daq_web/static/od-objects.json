@@ -1,0 +1,4837 @@
+{
+  "items": [
+    {
+      "id": "16896:1",
+      "index": 16896,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "System status (bits)",
+      "length": 1
+    },
+    {
+      "id": "16896:2",
+      "index": 16896,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "System error (bits)",
+      "length": 1
+    },
+    {
+      "id": "16896:4",
+      "index": 16896,
+      "subindex": 4,
+      "type": "I32",
+      "access": "RW",
+      "name": "System LED time [100ms]",
+      "length": 1
+    },
+    {
+      "id": "16896:5",
+      "index": 16896,
+      "subindex": 5,
+      "type": "U16",
+      "access": "RO",
+      "name": "System LED mode",
+      "length": 1
+    },
+    {
+      "id": "16896:6",
+      "index": 16896,
+      "subindex": 6,
+      "type": "U16",
+      "access": "RW",
+      "name": "LEDs identify timer",
+      "length": 1
+    },
+    {
+      "id": "16897:1",
+      "index": 16897,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RO",
+      "name": "CH1 LED mode",
+      "length": 1
+    },
+    {
+      "id": "16897:2",
+      "index": 16897,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RO",
+      "name": "CH2 LED mode",
+      "length": 1
+    },
+    {
+      "id": "16897:3",
+      "index": 16897,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RO",
+      "name": "CH3 LED mode",
+      "length": 1
+    },
+    {
+      "id": "16897:4",
+      "index": 16897,
+      "subindex": 4,
+      "type": "U16",
+      "access": "RO",
+      "name": "CH4 LED mode",
+      "length": 1
+    },
+    {
+      "id": "17024:0",
+      "index": 17024,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RO",
+      "name": "Unsaved changes in file (bits) - (config_paramset | config_global | fieldbus | system)",
+      "length": 1
+    },
+    {
+      "id": "4608:0",
+      "index": 4608,
+      "subindex": 0,
+      "type": "U32",
+      "access": "RO",
+      "name": "System current IP",
+      "length": 1
+    },
+    {
+      "id": "4608:1",
+      "index": 4608,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "System current netmask",
+      "length": 1
+    },
+    {
+      "id": "4609:0",
+      "index": 4609,
+      "subindex": 0,
+      "type": "U32",
+      "access": "RW",
+      "name": "Static IP",
+      "length": 1
+    },
+    {
+      "id": "4609:1",
+      "index": 4609,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Static netmask",
+      "length": 1
+    },
+    {
+      "id": "4609:2",
+      "index": 4609,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RW",
+      "name": "Static gateway",
+      "length": 1
+    },
+    {
+      "id": "4610:0",
+      "index": 4610,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RW",
+      "name": "IP method - DHCP(0)",
+      "length": 1
+    },
+    {
+      "id": "4613:0",
+      "index": 4613,
+      "subindex": 0,
+      "type": "U32",
+      "access": "RW",
+      "name": "DNS Server",
+      "length": 1
+    },
+    {
+      "id": "4614:0",
+      "index": 4614,
+      "subindex": 0,
+      "type": "STR",
+      "access": "RW",
+      "name": "NTP Server",
+      "length": 1
+    },
+    {
+      "id": "4112:1",
+      "index": 4112,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Store all parameters - write 0x65766173 (1702257011)",
+      "length": 1
+    },
+    {
+      "id": "4113:1",
+      "index": 4113,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Restore all parameters to factory default including network settings  - write 0x64616f6c (1684107116)",
+      "length": 1
+    },
+    {
+      "id": "4114:1",
+      "index": 4114,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Restore all parameters  to factory default excluding network settings - write 0x64616f6c (1684107116)",
+      "length": 1
+    },
+    {
+      "id": "17024:1",
+      "index": 17024,
+      "subindex": 1,
+      "type": "STR",
+      "access": "RW",
+      "name": "System host name",
+      "length": 1
+    },
+    {
+      "id": "4611:0",
+      "index": 4611,
+      "subindex": 0,
+      "type": "U64",
+      "access": "RO",
+      "name": "System MAC",
+      "length": 1
+    },
+    {
+      "id": "17024:250",
+      "index": 17024,
+      "subindex": 250,
+      "type": "U8",
+      "access": "RO",
+      "name": "System load",
+      "length": 1
+    },
+    {
+      "id": "135:0",
+      "index": 135,
+      "subindex": 0,
+      "type": "I32",
+      "access": "RO",
+      "name": "System temperature",
+      "length": 1
+    },
+    {
+      "id": "135:1",
+      "index": 135,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RO",
+      "name": "System Humidity",
+      "length": 1
+    },
+    {
+      "id": "4612:0",
+      "index": 4612,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RW",
+      "name": "Streaming Source",
+      "length": 1
+    },
+    {
+      "id": "8193:1",
+      "index": 8193,
+      "subindex": 1,
+      "type": "I8",
+      "access": "RO",
+      "name": "HW Feature 1 Analog Out",
+      "length": 1
+    },
+    {
+      "id": "8193:2",
+      "index": 8193,
+      "subindex": 2,
+      "type": "I8",
+      "access": "RO",
+      "name": "HW Feature 2 DIO",
+      "length": 1
+    },
+    {
+      "id": "8193:3",
+      "index": 8193,
+      "subindex": 3,
+      "type": "I8",
+      "access": "RO",
+      "name": "HW Feature 3 Fieldbus",
+      "length": 1
+    },
+    {
+      "id": "8193:4",
+      "index": 8193,
+      "subindex": 4,
+      "type": "I8",
+      "access": "RO",
+      "name": "HW Feature 4 Ethernet",
+      "length": 1
+    },
+    {
+      "id": "16376:1",
+      "index": 16376,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "Current parameter set index",
+      "length": 1
+    },
+    {
+      "id": "16376:2",
+      "index": 16376,
+      "subindex": 2,
+      "type": "STR",
+      "access": "RW",
+      "name": "Current parameter set name",
+      "length": 1
+    },
+    {
+      "id": "16376:3",
+      "index": 16376,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RW",
+      "name": "Storage target parameter set index",
+      "length": 1
+    },
+    {
+      "id": "16376:4",
+      "index": 16376,
+      "subindex": 4,
+      "type": "STR",
+      "access": "RW",
+      "name": "Storage target parameter set name",
+      "length": 1
+    },
+    {
+      "id": "16376:5",
+      "index": 16376,
+      "subindex": 5,
+      "type": "U8",
+      "access": "RW",
+      "name": "Set parameter set with ID to default - write ID to be deleted",
+      "length": 1
+    },
+    {
+      "id": "16376:6",
+      "index": 16376,
+      "subindex": 6,
+      "type": "U8",
+      "access": "RW",
+      "name": "Set all parameter sets to default - write 1",
+      "length": 1
+    },
+    {
+      "id": "16377:0",
+      "index": 16377,
+      "subindex": 0,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 1",
+      "length": 1
+    },
+    {
+      "id": "16377:1",
+      "index": 16377,
+      "subindex": 1,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 2",
+      "length": 1
+    },
+    {
+      "id": "16377:2",
+      "index": 16377,
+      "subindex": 2,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 3",
+      "length": 1
+    },
+    {
+      "id": "16377:3",
+      "index": 16377,
+      "subindex": 3,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 4",
+      "length": 1
+    },
+    {
+      "id": "16377:4",
+      "index": 16377,
+      "subindex": 4,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 5",
+      "length": 1
+    },
+    {
+      "id": "16377:5",
+      "index": 16377,
+      "subindex": 5,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 6",
+      "length": 1
+    },
+    {
+      "id": "16377:6",
+      "index": 16377,
+      "subindex": 6,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 7",
+      "length": 1
+    },
+    {
+      "id": "16377:7",
+      "index": 16377,
+      "subindex": 7,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 8",
+      "length": 1
+    },
+    {
+      "id": "16377:8",
+      "index": 16377,
+      "subindex": 8,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 9",
+      "length": 1
+    },
+    {
+      "id": "16377:9",
+      "index": 16377,
+      "subindex": 9,
+      "type": "STR",
+      "access": "RW",
+      "name": "Parameter set name 10",
+      "length": 1
+    },
+    {
+      "id": "11008:1",
+      "index": 11008,
+      "subindex": 1,
+      "type": "STR",
+      "access": "RW",
+      "name": "MQTT Broker Domain",
+      "length": 1
+    },
+    {
+      "id": "11008:2",
+      "index": 11008,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Broker Port",
+      "length": 1
+    },
+    {
+      "id": "11008:3",
+      "index": 11008,
+      "subindex": 3,
+      "type": "STR",
+      "access": "RW",
+      "name": "MQTT ClientId",
+      "length": 1
+    },
+    {
+      "id": "11008:4",
+      "index": 11008,
+      "subindex": 4,
+      "type": "STR",
+      "access": "RW",
+      "name": "MQTT Username",
+      "length": 1
+    },
+    {
+      "id": "11008:6",
+      "index": 11008,
+      "subindex": 6,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Transport Layer",
+      "length": 1
+    },
+    {
+      "id": "11008:7",
+      "index": 11008,
+      "subindex": 7,
+      "type": "U8",
+      "access": "RO",
+      "name": "MQTT return Code",
+      "length": 1
+    },
+    {
+      "id": "11009:1",
+      "index": 11009,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Send Intervall",
+      "length": 1
+    },
+    {
+      "id": "11009:2",
+      "index": 11009,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Cyclic Topic Format",
+      "length": 1
+    },
+    {
+      "id": "11009:3",
+      "index": 11009,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT JSON RPC Topic Format",
+      "length": 1
+    },
+    {
+      "id": "11010:1",
+      "index": 11010,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Topic 1 Idx",
+      "length": 1
+    },
+    {
+      "id": "11010:2",
+      "index": 11010,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Topic 1 Subidx",
+      "length": 1
+    },
+    {
+      "id": "11011:1",
+      "index": 11011,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Topic 2 Idx",
+      "length": 1
+    },
+    {
+      "id": "11011:2",
+      "index": 11011,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Topic 2 Subidx",
+      "length": 1
+    },
+    {
+      "id": "11012:1",
+      "index": 11012,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Topic 3 Idx",
+      "length": 1
+    },
+    {
+      "id": "11012:2",
+      "index": 11012,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Topic 3 Subidx",
+      "length": 1
+    },
+    {
+      "id": "11013:1",
+      "index": 11013,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "MQTT Topic 4 Idx",
+      "length": 1
+    },
+    {
+      "id": "11013:2",
+      "index": 11013,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "MQTT Topic 4 Subidx",
+      "length": 1
+    },
+    {
+      "id": "9728:1",
+      "index": 9728,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling lower input value",
+      "length": 1
+    },
+    {
+      "id": "9728:2",
+      "index": 9728,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling upper input value",
+      "length": 1
+    },
+    {
+      "id": "9728:3",
+      "index": 9728,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling lower output voltage",
+      "length": 1
+    },
+    {
+      "id": "9728:4",
+      "index": 9728,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling upper output voltage",
+      "length": 1
+    },
+    {
+      "id": "9728:5",
+      "index": 9728,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling lower output current",
+      "length": 1
+    },
+    {
+      "id": "9728:6",
+      "index": 9728,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 user scaling upper output current",
+      "length": 1
+    },
+    {
+      "id": "9729:1",
+      "index": 9729,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling lower input value",
+      "length": 1
+    },
+    {
+      "id": "9729:2",
+      "index": 9729,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling upper input value",
+      "length": 1
+    },
+    {
+      "id": "9729:3",
+      "index": 9729,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling lower output voltage",
+      "length": 1
+    },
+    {
+      "id": "9729:4",
+      "index": 9729,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling upper output voltage",
+      "length": 1
+    },
+    {
+      "id": "9729:5",
+      "index": 9729,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling lower output current",
+      "length": 1
+    },
+    {
+      "id": "9729:6",
+      "index": 9729,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 user scaling upper output current",
+      "length": 1
+    },
+    {
+      "id": "9730:1",
+      "index": 9730,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling lower input value",
+      "length": 1
+    },
+    {
+      "id": "9730:2",
+      "index": 9730,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling upper input value",
+      "length": 1
+    },
+    {
+      "id": "9730:3",
+      "index": 9730,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling lower output voltage",
+      "length": 1
+    },
+    {
+      "id": "9730:4",
+      "index": 9730,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling upper output voltage",
+      "length": 1
+    },
+    {
+      "id": "9730:5",
+      "index": 9730,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling lower output current",
+      "length": 1
+    },
+    {
+      "id": "9730:6",
+      "index": 9730,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 user scaling upper output current",
+      "length": 1
+    },
+    {
+      "id": "9731:1",
+      "index": 9731,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling lower input value",
+      "length": 1
+    },
+    {
+      "id": "9731:2",
+      "index": 9731,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling upper input value",
+      "length": 1
+    },
+    {
+      "id": "9731:3",
+      "index": 9731,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling lower output voltage",
+      "length": 1
+    },
+    {
+      "id": "9731:4",
+      "index": 9731,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling upper output voltage",
+      "length": 1
+    },
+    {
+      "id": "9731:5",
+      "index": 9731,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling lower output current",
+      "length": 1
+    },
+    {
+      "id": "9731:6",
+      "index": 9731,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 user scaling upper output current",
+      "length": 1
+    },
+    {
+      "id": "9732:1",
+      "index": 9732,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #1 enable output",
+      "length": 1
+    },
+    {
+      "id": "9732:2",
+      "index": 9732,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #2 enable output",
+      "length": 1
+    },
+    {
+      "id": "9732:3",
+      "index": 9732,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #3 enable output",
+      "length": 1
+    },
+    {
+      "id": "9732:4",
+      "index": 9732,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #4 enable output",
+      "length": 1
+    },
+    {
+      "id": "9733:1",
+      "index": 9733,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #1 enable test output",
+      "length": 1
+    },
+    {
+      "id": "9733:2",
+      "index": 9733,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #2 enable test output",
+      "length": 1
+    },
+    {
+      "id": "9733:3",
+      "index": 9733,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #3 enable test output",
+      "length": 1
+    },
+    {
+      "id": "9733:4",
+      "index": 9733,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output #4 enable test output",
+      "length": 1
+    },
+    {
+      "id": "9734:1",
+      "index": 9734,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "Analog output #1 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9734:2",
+      "index": 9734,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "Analog output #2 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9734:3",
+      "index": 9734,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RW",
+      "name": "Analog output #3 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9734:4",
+      "index": 9734,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RW",
+      "name": "Analog output #4 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9735:1",
+      "index": 9735,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Analog output mode - voltage(false)",
+      "length": 1
+    },
+    {
+      "id": "9736:1",
+      "index": 9736,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Analog output #1 output value",
+      "length": 1
+    },
+    {
+      "id": "9736:2",
+      "index": 9736,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Analog output #2 output value",
+      "length": 1
+    },
+    {
+      "id": "9736:3",
+      "index": 9736,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Analog output #3 output value",
+      "length": 1
+    },
+    {
+      "id": "9736:4",
+      "index": 9736,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Analog output #4 output value",
+      "length": 1
+    },
+    {
+      "id": "9738:1",
+      "index": 9738,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "Analog output #1 output status",
+      "length": 1
+    },
+    {
+      "id": "9738:2",
+      "index": 9738,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "Analog output #2 output status",
+      "length": 1
+    },
+    {
+      "id": "9738:3",
+      "index": 9738,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RO",
+      "name": "Analog output #3 output status",
+      "length": 1
+    },
+    {
+      "id": "9738:4",
+      "index": 9738,
+      "subindex": 4,
+      "type": "U32",
+      "access": "RO",
+      "name": "Analog output #4 output status",
+      "length": 1
+    },
+    {
+      "id": "9737:1",
+      "index": 9737,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 error voltage",
+      "length": 1
+    },
+    {
+      "id": "9737:2",
+      "index": 9737,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 error voltage",
+      "length": 1
+    },
+    {
+      "id": "9737:3",
+      "index": 9737,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 error voltage",
+      "length": 1
+    },
+    {
+      "id": "9737:4",
+      "index": 9737,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 error voltage",
+      "length": 1
+    },
+    {
+      "id": "9744:1",
+      "index": 9744,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 error current",
+      "length": 1
+    },
+    {
+      "id": "9744:2",
+      "index": 9744,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 error current",
+      "length": 1
+    },
+    {
+      "id": "9744:3",
+      "index": 9744,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 error current",
+      "length": 1
+    },
+    {
+      "id": "9744:4",
+      "index": 9744,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 error current",
+      "length": 1
+    },
+    {
+      "id": "9745:1",
+      "index": 9745,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 test voltage",
+      "length": 1
+    },
+    {
+      "id": "9745:2",
+      "index": 9745,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 test voltage",
+      "length": 1
+    },
+    {
+      "id": "9745:3",
+      "index": 9745,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 test voltage",
+      "length": 1
+    },
+    {
+      "id": "9745:4",
+      "index": 9745,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 test voltage",
+      "length": 1
+    },
+    {
+      "id": "9746:1",
+      "index": 9746,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #1 test current",
+      "length": 1
+    },
+    {
+      "id": "9746:2",
+      "index": 9746,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #2 test current",
+      "length": 1
+    },
+    {
+      "id": "9746:3",
+      "index": 9746,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #3 test current",
+      "length": 1
+    },
+    {
+      "id": "9746:4",
+      "index": 9746,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Analog output #4 test current",
+      "length": 1
+    },
+    {
+      "id": "9236:1",
+      "index": 9236,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #1 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9236:3",
+      "index": 9236,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #1 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9237:1",
+      "index": 9237,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #2 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9237:3",
+      "index": 9237,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #2 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9238:1",
+      "index": 9238,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #3 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9238:3",
+      "index": 9238,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #3 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9239:1",
+      "index": 9239,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #4 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9239:3",
+      "index": 9239,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Peak value #4 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9240:1",
+      "index": 9240,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #1 capture flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9240:3",
+      "index": 9240,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #1 capture level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9241:1",
+      "index": 9241,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #2 capture flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9241:3",
+      "index": 9241,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #2 capture level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9242:1",
+      "index": 9242,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #3 capture flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9242:3",
+      "index": 9242,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #3 capture level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9243:1",
+      "index": 9243,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #4 capture flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9243:3",
+      "index": 9243,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #4 capture level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9244:1",
+      "index": 9244,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #1 mark invalid flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9244:3",
+      "index": 9244,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #1 mark invalid level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9245:1",
+      "index": 9245,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #2 mark invalid flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9245:3",
+      "index": 9245,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #2 mark invalid level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9246:1",
+      "index": 9246,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #3 mark invalid flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9246:3",
+      "index": 9246,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #3 mark invalid level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9247:1",
+      "index": 9247,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #4 mark invalid flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9247:3",
+      "index": 9247,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Capture value #4 mark invalid level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9248:1",
+      "index": 9248,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #1 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9248:3",
+      "index": 9248,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #1 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9249:1",
+      "index": 9249,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #2 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9249:3",
+      "index": 9249,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #2 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9250:1",
+      "index": 9250,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #3 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9250:3",
+      "index": 9250,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #3 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9251:1",
+      "index": 9251,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #4 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9251:3",
+      "index": 9251,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #4 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9252:1",
+      "index": 9252,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #5 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9252:3",
+      "index": 9252,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #5 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9253:1",
+      "index": 9253,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #6 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9253:3",
+      "index": 9253,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #6 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9254:1",
+      "index": 9254,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #7 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9254:3",
+      "index": 9254,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #7 reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9255:1",
+      "index": 9255,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #8 reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9255:3",
+      "index": 9255,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Limit switch #8 reset level (bits) ",
+      "length": 1
+    },
+    {
+      "id": "9264:1",
+      "index": 9264,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "Sum filter fast track flags (bits) ",
+      "length": 1
+    },
+    {
+      "id": "9264:3",
+      "index": 9264,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "Sum filter fast track level (bits) ",
+      "length": 1
+    },
+    {
+      "id": "9473:0",
+      "index": 9473,
+      "subindex": 0,
+      "type": "U16",
+      "access": "RW",
+      "name": "Capture value #1 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9474:0",
+      "index": 9474,
+      "subindex": 0,
+      "type": "U16",
+      "access": "RW",
+      "name": "Capture value #2 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9475:0",
+      "index": 9475,
+      "subindex": 0,
+      "type": "U16",
+      "access": "RW",
+      "name": "Capture value #3 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9476:0",
+      "index": 9476,
+      "subindex": 0,
+      "type": "U16",
+      "access": "RW",
+      "name": "Capture value #4 source signal index",
+      "length": 1
+    },
+    {
+      "id": "9472:1",
+      "index": 9472,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Capture value #1",
+      "length": 1
+    },
+    {
+      "id": "9472:2",
+      "index": 9472,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Capture value #2",
+      "length": 1
+    },
+    {
+      "id": "9472:3",
+      "index": 9472,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Capture value #3",
+      "length": 1
+    },
+    {
+      "id": "9472:4",
+      "index": 9472,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Capture value #4",
+      "length": 1
+    },
+    {
+      "id": "9477:1",
+      "index": 9477,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "Capture value status #1",
+      "length": 1
+    },
+    {
+      "id": "9477:2",
+      "index": 9477,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "Capture value status #2",
+      "length": 1
+    },
+    {
+      "id": "9477:3",
+      "index": 9477,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RO",
+      "name": "Capture value status #3",
+      "length": 1
+    },
+    {
+      "id": "9477:4",
+      "index": 9477,
+      "subindex": 4,
+      "type": "U32",
+      "access": "RO",
+      "name": "Capture value status #4",
+      "length": 1
+    },
+    {
+      "id": "9216:1",
+      "index": 9216,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA HW reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9216:3",
+      "index": 9216,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA HW reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9217:1",
+      "index": 9217,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA HW reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9217:3",
+      "index": 9217,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA HW reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9220:1",
+      "index": 9220,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA SW reset set zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9220:3",
+      "index": 9220,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA SW reset set zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9221:1",
+      "index": 9221,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA SW reset set zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9221:3",
+      "index": 9221,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA SW reset set zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9260:1",
+      "index": 9260,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA range flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9260:3",
+      "index": 9260,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA range level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9261:1",
+      "index": 9261,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA range flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9261:3",
+      "index": 9261,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA range level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9232:1",
+      "index": 9232,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 fast track flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9232:3",
+      "index": 9232,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 fast track level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9233:1",
+      "index": 9233,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 fast track flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9233:3",
+      "index": 9233,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 fast track level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9256:1",
+      "index": 9256,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA SW reset hold zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9256:3",
+      "index": 9256,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA SW reset hold zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9257:1",
+      "index": 9257,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA SW reset hold zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9257:3",
+      "index": 9257,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA SW reset hold zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9218:1",
+      "index": 9218,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA HW reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9218:3",
+      "index": 9218,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA HW reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9219:1",
+      "index": 9219,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA HW reset flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9219:3",
+      "index": 9219,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA HW reset level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9222:1",
+      "index": 9222,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA SW reset set zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9222:3",
+      "index": 9222,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA SW reset set zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9223:1",
+      "index": 9223,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA SW reset set zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9223:3",
+      "index": 9223,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA SW reset set zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9262:1",
+      "index": 9262,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA range flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9262:3",
+      "index": 9262,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA range level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9263:1",
+      "index": 9263,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA range flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9263:3",
+      "index": 9263,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA range level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9234:1",
+      "index": 9234,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 fast track flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9234:3",
+      "index": 9234,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 fast track level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9235:1",
+      "index": 9235,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 fast track flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9235:3",
+      "index": 9235,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 fast track level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9258:1",
+      "index": 9258,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA SW reset hold zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9258:3",
+      "index": 9258,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA SW reset hold zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "9259:1",
+      "index": 9259,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA SW reset hold zero flags (bits)",
+      "length": 1
+    },
+    {
+      "id": "9259:3",
+      "index": 9259,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA SW reset hold zero level (bits)",
+      "length": 1
+    },
+    {
+      "id": "4096:0",
+      "index": 4096,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RO",
+      "name": "Number of channels",
+      "length": 1
+    },
+    {
+      "id": "4096:1",
+      "index": 4096,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH1 channel type - none(0)",
+      "length": 1
+    },
+    {
+      "id": "4096:2",
+      "index": 4096,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH2 channel type - none(0)",
+      "length": 1
+    },
+    {
+      "id": "4096:3",
+      "index": 4096,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH3 channel type - none(0)",
+      "length": 1
+    },
+    {
+      "id": "4096:4",
+      "index": 4096,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH4 channel type - none(0)",
+      "length": 1
+    },
+    {
+      "id": "10752:1",
+      "index": 10752,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Fieldbus value #1",
+      "length": 1
+    },
+    {
+      "id": "10752:2",
+      "index": 10752,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Fieldbus value #2",
+      "length": 1
+    },
+    {
+      "id": "10752:3",
+      "index": 10752,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Fieldbus value #3",
+      "length": 1
+    },
+    {
+      "id": "10752:4",
+      "index": 10752,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Fieldbus value #4",
+      "length": 1
+    },
+    {
+      "id": "10753:1",
+      "index": 10753,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "User defined value",
+      "length": 1
+    },
+    {
+      "id": "8208:1",
+      "index": 8208,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "CH1 signal status (bits)",
+      "length": 1
+    },
+    {
+      "id": "8208:2",
+      "index": 8208,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "CH2 signal status (bits)",
+      "length": 1
+    },
+    {
+      "id": "8210:1",
+      "index": 8210,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 ADC value",
+      "length": 1
+    },
+    {
+      "id": "8210:2",
+      "index": 8210,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 ADC value",
+      "length": 1
+    },
+    {
+      "id": "8212:1",
+      "index": 8212,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 field value",
+      "length": 1
+    },
+    {
+      "id": "8212:2",
+      "index": 8212,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 field value",
+      "length": 1
+    },
+    {
+      "id": "8214:1",
+      "index": 8214,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 process value unfiltered",
+      "length": 1
+    },
+    {
+      "id": "8214:2",
+      "index": 8214,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 process value unfiltered",
+      "length": 1
+    },
+    {
+      "id": "8216:1",
+      "index": 8216,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 process value filter1",
+      "length": 1
+    },
+    {
+      "id": "8216:2",
+      "index": 8216,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 process value filter1",
+      "length": 1
+    },
+    {
+      "id": "8218:1",
+      "index": 8218,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 process value filter2",
+      "length": 1
+    },
+    {
+      "id": "8218:2",
+      "index": 8218,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 process value filter2",
+      "length": 1
+    },
+    {
+      "id": "8222:1",
+      "index": 8222,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 final value",
+      "length": 1
+    },
+    {
+      "id": "8222:2",
+      "index": 8222,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 final value",
+      "length": 1
+    },
+    {
+      "id": "8480:1",
+      "index": 8480,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH1 enable user scaling",
+      "length": 1
+    },
+    {
+      "id": "8480:2",
+      "index": 8480,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH2 enable user scaling",
+      "length": 1
+    },
+    {
+      "id": "8257:4",
+      "index": 8257,
+      "subindex": 4,
+      "type": "STR",
+      "access": "RO",
+      "name": "CH1 field unit",
+      "length": 1
+    },
+    {
+      "id": "8257:5",
+      "index": 8257,
+      "subindex": 5,
+      "type": "STR",
+      "access": "RO",
+      "name": "CH2 field unit",
+      "length": 1
+    },
+    {
+      "id": "8258:4",
+      "index": 8258,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH1 field decimals",
+      "length": 1
+    },
+    {
+      "id": "8258:5",
+      "index": 8258,
+      "subindex": 5,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH2 field decimals",
+      "length": 1
+    },
+    {
+      "id": "8256:24",
+      "index": 8256,
+      "subindex": 24,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH1 final name",
+      "length": 1
+    },
+    {
+      "id": "8256:25",
+      "index": 8256,
+      "subindex": 25,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH2 final name",
+      "length": 1
+    },
+    {
+      "id": "8257:24",
+      "index": 8257,
+      "subindex": 24,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH1 final unit",
+      "length": 1
+    },
+    {
+      "id": "8257:25",
+      "index": 8257,
+      "subindex": 25,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH2 final unit",
+      "length": 1
+    },
+    {
+      "id": "8258:24",
+      "index": 8258,
+      "subindex": 24,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH1 final decimals",
+      "length": 1
+    },
+    {
+      "id": "8258:25",
+      "index": 8258,
+      "subindex": 25,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH2 final decimals",
+      "length": 1
+    },
+    {
+      "id": "8528:1",
+      "index": 8528,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH1 control (bits)",
+      "length": 1
+    },
+    {
+      "id": "8528:2",
+      "index": 8528,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH2 control (bits)",
+      "length": 1
+    },
+    {
+      "id": "12293:2",
+      "index": 12293,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH1 siggen mode - pass-thru(0)",
+      "length": 1
+    },
+    {
+      "id": "12293:3",
+      "index": 12293,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 siggen frequency",
+      "length": 1
+    },
+    {
+      "id": "12293:4",
+      "index": 12293,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 siggen amplitude",
+      "length": 1
+    },
+    {
+      "id": "12293:5",
+      "index": 12293,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 siggen offset",
+      "length": 1
+    },
+    {
+      "id": "12293:6",
+      "index": 12293,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 siggen duty cycle",
+      "length": 1
+    },
+    {
+      "id": "12294:2",
+      "index": 12294,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH2 siggen mode -pass-thru(0)",
+      "length": 1
+    },
+    {
+      "id": "12294:3",
+      "index": 12294,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 siggen frequency",
+      "length": 1
+    },
+    {
+      "id": "12294:4",
+      "index": 12294,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 siggen amplitude",
+      "length": 1
+    },
+    {
+      "id": "12294:5",
+      "index": 12294,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 siggen offset",
+      "length": 1
+    },
+    {
+      "id": "12294:6",
+      "index": 12294,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 siggen duty cycle",
+      "length": 1
+    },
+    {
+      "id": "12289:1",
+      "index": 12289,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH1 IIR filter1 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12289:2",
+      "index": 12289,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 IIR filter1 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12289:3",
+      "index": 12289,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH1 IIR filter2 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12289:4",
+      "index": 12289,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 IIR filter2 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12290:1",
+      "index": 12290,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH2 IIR filter1 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12290:2",
+      "index": 12290,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 IIR filter1 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12290:3",
+      "index": 12290,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH2 IIR filter2 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12290:4",
+      "index": 12290,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 IIR filter2 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "8469:1",
+      "index": 8469,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 field mean",
+      "length": 1
+    },
+    {
+      "id": "8469:2",
+      "index": 8469,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 field mean",
+      "length": 1
+    },
+    {
+      "id": "8470:1",
+      "index": 8470,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH1 field mean value",
+      "length": 1
+    },
+    {
+      "id": "8470:2",
+      "index": 8470,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH2 field mean value",
+      "length": 1
+    },
+    {
+      "id": "8468:1",
+      "index": 8468,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH1 field mean state",
+      "length": 1
+    },
+    {
+      "id": "8468:2",
+      "index": 8468,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH2 field mean state",
+      "length": 1
+    },
+    {
+      "id": "8209:1",
+      "index": 8209,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "CH3 signal status (bits)",
+      "length": 1
+    },
+    {
+      "id": "8209:2",
+      "index": 8209,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "CH4 signal status (bits)",
+      "length": 1
+    },
+    {
+      "id": "8211:1",
+      "index": 8211,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 ADC value",
+      "length": 1
+    },
+    {
+      "id": "8211:2",
+      "index": 8211,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 ADC value",
+      "length": 1
+    },
+    {
+      "id": "8213:1",
+      "index": 8213,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 field value",
+      "length": 1
+    },
+    {
+      "id": "8213:2",
+      "index": 8213,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 field value",
+      "length": 1
+    },
+    {
+      "id": "8215:1",
+      "index": 8215,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 process value unfiltered",
+      "length": 1
+    },
+    {
+      "id": "8215:2",
+      "index": 8215,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 process value unfiltered",
+      "length": 1
+    },
+    {
+      "id": "8217:1",
+      "index": 8217,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 process value filter1",
+      "length": 1
+    },
+    {
+      "id": "8217:2",
+      "index": 8217,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 process value filter1",
+      "length": 1
+    },
+    {
+      "id": "8219:1",
+      "index": 8219,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 process value filter2",
+      "length": 1
+    },
+    {
+      "id": "8219:2",
+      "index": 8219,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 process value filter2",
+      "length": 1
+    },
+    {
+      "id": "8223:1",
+      "index": 8223,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 final value",
+      "length": 1
+    },
+    {
+      "id": "8223:2",
+      "index": 8223,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 final value",
+      "length": 1
+    },
+    {
+      "id": "8480:3",
+      "index": 8480,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH3 enable user scaling",
+      "length": 1
+    },
+    {
+      "id": "8480:4",
+      "index": 8480,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH4 enable user scaling",
+      "length": 1
+    },
+    {
+      "id": "8257:6",
+      "index": 8257,
+      "subindex": 6,
+      "type": "STR",
+      "access": "RO",
+      "name": "CH3 field unit",
+      "length": 1
+    },
+    {
+      "id": "8257:7",
+      "index": 8257,
+      "subindex": 7,
+      "type": "STR",
+      "access": "RO",
+      "name": "CH4 field unit",
+      "length": 1
+    },
+    {
+      "id": "8258:6",
+      "index": 8258,
+      "subindex": 6,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH3 field decimals",
+      "length": 1
+    },
+    {
+      "id": "8258:7",
+      "index": 8258,
+      "subindex": 7,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH4 field decimals",
+      "length": 1
+    },
+    {
+      "id": "8256:26",
+      "index": 8256,
+      "subindex": 26,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH3 final name",
+      "length": 1
+    },
+    {
+      "id": "8256:27",
+      "index": 8256,
+      "subindex": 27,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH4 final name",
+      "length": 1
+    },
+    {
+      "id": "8257:26",
+      "index": 8257,
+      "subindex": 26,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH3 final unit",
+      "length": 1
+    },
+    {
+      "id": "8257:27",
+      "index": 8257,
+      "subindex": 27,
+      "type": "STR",
+      "access": "RW",
+      "name": "CH4 final unit",
+      "length": 1
+    },
+    {
+      "id": "8258:26",
+      "index": 8258,
+      "subindex": 26,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH3 final decimals",
+      "length": 1
+    },
+    {
+      "id": "8258:27",
+      "index": 8258,
+      "subindex": 27,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH4 final decimals",
+      "length": 1
+    },
+    {
+      "id": "8529:1",
+      "index": 8529,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH3 control (bits)",
+      "length": 1
+    },
+    {
+      "id": "8529:2",
+      "index": 8529,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "CH4 control (bits)",
+      "length": 1
+    },
+    {
+      "id": "12295:2",
+      "index": 12295,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH3 siggen mode - pass-thru(0)",
+      "length": 1
+    },
+    {
+      "id": "12295:3",
+      "index": 12295,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 siggen frequency",
+      "length": 1
+    },
+    {
+      "id": "12295:4",
+      "index": 12295,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 siggen amplitude",
+      "length": 1
+    },
+    {
+      "id": "12295:5",
+      "index": 12295,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 siggen offset",
+      "length": 1
+    },
+    {
+      "id": "12295:6",
+      "index": 12295,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 siggen duty cycle",
+      "length": 1
+    },
+    {
+      "id": "12296:2",
+      "index": 12296,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH4 siggen mode - pass-thru(0)",
+      "length": 1
+    },
+    {
+      "id": "12296:3",
+      "index": 12296,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 siggen frequency",
+      "length": 1
+    },
+    {
+      "id": "12296:4",
+      "index": 12296,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 siggen amplitude",
+      "length": 1
+    },
+    {
+      "id": "12296:5",
+      "index": 12296,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 siggen offset",
+      "length": 1
+    },
+    {
+      "id": "12296:6",
+      "index": 12296,
+      "subindex": 6,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 siggen duty cycle",
+      "length": 1
+    },
+    {
+      "id": "12291:1",
+      "index": 12291,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH3 IIR filter1 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12291:2",
+      "index": 12291,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 IIR filter1 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12291:3",
+      "index": 12291,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH3 IIR filter2 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12291:4",
+      "index": 12291,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 IIR filter2 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12292:1",
+      "index": 12292,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH4 IIR filter1 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12292:2",
+      "index": 12292,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 IIR filter1 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "12292:3",
+      "index": 12292,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "CH4 IIR filter2 mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12292:4",
+      "index": 12292,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 IIR filter2 cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "8469:3",
+      "index": 8469,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 field mean",
+      "length": 1
+    },
+    {
+      "id": "8469:4",
+      "index": 8469,
+      "subindex": 4,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 field mean",
+      "length": 1
+    },
+    {
+      "id": "8470:3",
+      "index": 8470,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH3 field mean value",
+      "length": 1
+    },
+    {
+      "id": "8470:4",
+      "index": 8470,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "CH4 field mean value",
+      "length": 1
+    },
+    {
+      "id": "8468:3",
+      "index": 8468,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH3 field mean state",
+      "length": 1
+    },
+    {
+      "id": "8468:4",
+      "index": 8468,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RO",
+      "name": "CH4 field mean state",
+      "length": 1
+    },
+    {
+      "id": "8512:1",
+      "index": 8512,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA user scaling slope m",
+      "length": 1
+    },
+    {
+      "id": "8513:1",
+      "index": 8513,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA user scaling slope m",
+      "length": 1
+    },
+    {
+      "id": "8657:1",
+      "index": 8657,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA limiter - lower sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8657:2",
+      "index": 8657,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA limiter - upper sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8657:3",
+      "index": 8657,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA limiter - lower sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8657:4",
+      "index": 8657,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA limiter - upper sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8658:1",
+      "index": 8658,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA limiter - lower sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8658:2",
+      "index": 8658,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA limiter - upper sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8658:3",
+      "index": 8658,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA limiter - lower sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8658:4",
+      "index": 8658,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA limiter - upper sensor limit",
+      "length": 1
+    },
+    {
+      "id": "8455:1",
+      "index": 8455,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH1 CA enable HW reset",
+      "length": 1
+    },
+    {
+      "id": "8455:2",
+      "index": 8455,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH2 CA enable HW reset",
+      "length": 1
+    },
+    {
+      "id": "8456:1",
+      "index": 8456,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH1 CA enable high range",
+      "length": 1
+    },
+    {
+      "id": "8456:2",
+      "index": 8456,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH2 CA enable high range",
+      "length": 1
+    },
+    {
+      "id": "8458:1",
+      "index": 8458,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH1 CA set hold zero - (false) inactive",
+      "length": 1
+    },
+    {
+      "id": "8458:2",
+      "index": 8458,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH2 CA set hold zero  - (false) inactive",
+      "length": 1
+    },
+    {
+      "id": "8450:178",
+      "index": 8450,
+      "subindex": 178,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH1 CA ready for drift adjustment",
+      "length": 1
+    },
+    {
+      "id": "8450:179",
+      "index": 8450,
+      "subindex": 179,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH1 CA drift adjustment requested",
+      "length": 1
+    },
+    {
+      "id": "8451:178",
+      "index": 8451,
+      "subindex": 178,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH2 CA ready for drift adjustment",
+      "length": 1
+    },
+    {
+      "id": "8451:179",
+      "index": 8451,
+      "subindex": 179,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH2 CA drift adjustment requested",
+      "length": 1
+    },
+    {
+      "id": "8471:1",
+      "index": 8471,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH1 CA measure drift parameter - write number of samples for processing",
+      "length": 1
+    },
+    {
+      "id": "8471:2",
+      "index": 8471,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH2 CA measure drift parameter - write number of samples for processing",
+      "length": 1
+    },
+    {
+      "id": "8472:1",
+      "index": 8472,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA measured drift parameter high range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8472:2",
+      "index": 8472,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA measured drift parameter high range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8473:1",
+      "index": 8473,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH1 CA measured drift parameter low range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8473:2",
+      "index": 8473,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH2 CA measured drift parameter low range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8514:1",
+      "index": 8514,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA user scaling slope m",
+      "length": 1
+    },
+    {
+      "id": "8515:1",
+      "index": 8515,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA user scaling slope m",
+      "length": 1
+    },
+    {
+      "id": "8659:1",
+      "index": 8659,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA limiter - lower limit",
+      "length": 1
+    },
+    {
+      "id": "8659:2",
+      "index": 8659,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA limiter - upper limit",
+      "length": 1
+    },
+    {
+      "id": "8659:3",
+      "index": 8659,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA limiter - lower limit",
+      "length": 1
+    },
+    {
+      "id": "8659:4",
+      "index": 8659,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA limiter - upper limit",
+      "length": 1
+    },
+    {
+      "id": "8660:1",
+      "index": 8660,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA limiter - lower limit",
+      "length": 1
+    },
+    {
+      "id": "8660:2",
+      "index": 8660,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA limiter - upper limit",
+      "length": 1
+    },
+    {
+      "id": "8660:3",
+      "index": 8660,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA limiter - lower limit",
+      "length": 1
+    },
+    {
+      "id": "8660:4",
+      "index": 8660,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA limiter - upper limit",
+      "length": 1
+    },
+    {
+      "id": "8455:3",
+      "index": 8455,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH3 CA enable HW reset",
+      "length": 1
+    },
+    {
+      "id": "8455:4",
+      "index": 8455,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH4 CA enable HW reset",
+      "length": 1
+    },
+    {
+      "id": "8456:3",
+      "index": 8456,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH3 CA enable high range",
+      "length": 1
+    },
+    {
+      "id": "8456:4",
+      "index": 8456,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH4 CA enable high range",
+      "length": 1
+    },
+    {
+      "id": "8458:3",
+      "index": 8458,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH3 CA set hold zero - (false) inactive",
+      "length": 1
+    },
+    {
+      "id": "8458:4",
+      "index": 8458,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "CH4 CA set hold zero  - (false) inactive",
+      "length": 1
+    },
+    {
+      "id": "8452:178",
+      "index": 8452,
+      "subindex": 178,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH3 CA ready for drift adjustment",
+      "length": 1
+    },
+    {
+      "id": "8452:179",
+      "index": 8452,
+      "subindex": 179,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH3 CA drift adjustment requested",
+      "length": 1
+    },
+    {
+      "id": "8453:178",
+      "index": 8453,
+      "subindex": 178,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH4 CA ready for drift adjustment",
+      "length": 1
+    },
+    {
+      "id": "8453:179",
+      "index": 8453,
+      "subindex": 179,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "CH4 CA drift adjustment requested",
+      "length": 1
+    },
+    {
+      "id": "8471:3",
+      "index": 8471,
+      "subindex": 3,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH3 CA measure drift parameter - write number of samples for processing",
+      "length": 1
+    },
+    {
+      "id": "8471:4",
+      "index": 8471,
+      "subindex": 4,
+      "type": "U32",
+      "access": "RW",
+      "name": "CH4 CA measure drift parameter - write number of samples for processing",
+      "length": 1
+    },
+    {
+      "id": "8472:3",
+      "index": 8472,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA measured drift parameter high range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8472:4",
+      "index": 8472,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA measured drift parameter high range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8473:3",
+      "index": 8473,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH3 CA measured drift parameter low range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8473:4",
+      "index": 8473,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "CH4 CA measured drift parameter low range (digits)",
+      "length": 1
+    },
+    {
+      "id": "8240:1",
+      "index": 8240,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Sum",
+      "length": 1
+    },
+    {
+      "id": "8240:2",
+      "index": 8240,
+      "subindex": 2,
+      "type": "U32",
+      "access": "RO",
+      "name": "Sum state",
+      "length": 1
+    },
+    {
+      "id": "8240:3",
+      "index": 8240,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Sum x-coord",
+      "length": 1
+    },
+    {
+      "id": "8240:4",
+      "index": 8240,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Sum y-coord",
+      "length": 1
+    },
+    {
+      "id": "8241:1",
+      "index": 8241,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Summand #1",
+      "length": 1
+    },
+    {
+      "id": "8241:2",
+      "index": 8241,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Summand #2",
+      "length": 1
+    },
+    {
+      "id": "8241:3",
+      "index": 8241,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "Summand #3",
+      "length": 1
+    },
+    {
+      "id": "8241:4",
+      "index": 8241,
+      "subindex": 4,
+      "type": "U16",
+      "access": "RW",
+      "name": "Summand #4",
+      "length": 1
+    },
+    {
+      "id": "8242:1",
+      "index": 8242,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand factor #1",
+      "length": 1
+    },
+    {
+      "id": "8242:2",
+      "index": 8242,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand factor #2",
+      "length": 1
+    },
+    {
+      "id": "8242:3",
+      "index": 8242,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand factor #3",
+      "length": 1
+    },
+    {
+      "id": "8242:4",
+      "index": 8242,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand factor #4",
+      "length": 1
+    },
+    {
+      "id": "8243:1",
+      "index": 8243,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Sum scaling point x0",
+      "length": 1
+    },
+    {
+      "id": "8243:2",
+      "index": 8243,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Sum scaling point y0",
+      "length": 1
+    },
+    {
+      "id": "8243:3",
+      "index": 8243,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Sum scaling point x1",
+      "length": 1
+    },
+    {
+      "id": "8243:4",
+      "index": 8243,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Sum scaling point y1",
+      "length": 1
+    },
+    {
+      "id": "8244:1",
+      "index": 8244,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #1 x-coord",
+      "length": 1
+    },
+    {
+      "id": "8245:1",
+      "index": 8245,
+      "subindex": 1,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #1 y-coord",
+      "length": 1
+    },
+    {
+      "id": "8244:2",
+      "index": 8244,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #2 x-coord",
+      "length": 1
+    },
+    {
+      "id": "8245:2",
+      "index": 8245,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #2 y-coord",
+      "length": 1
+    },
+    {
+      "id": "8244:3",
+      "index": 8244,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #3 x-coord",
+      "length": 1
+    },
+    {
+      "id": "8245:3",
+      "index": 8245,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #3 y-coord",
+      "length": 1
+    },
+    {
+      "id": "8244:4",
+      "index": 8244,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #4 x-coord",
+      "length": 1
+    },
+    {
+      "id": "8245:4",
+      "index": 8245,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Summand #4 y-coord",
+      "length": 1
+    },
+    {
+      "id": "8246:1",
+      "index": 8246,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Sum filter mode - off(0)",
+      "length": 1
+    },
+    {
+      "id": "8246:2",
+      "index": 8246,
+      "subindex": 2,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Sum filter cutoff frequency",
+      "length": 1
+    },
+    {
+      "id": "8256:54",
+      "index": 8256,
+      "subindex": 54,
+      "type": "STR",
+      "access": "RW",
+      "name": "Sum name",
+      "length": 1
+    },
+    {
+      "id": "8257:54",
+      "index": 8257,
+      "subindex": 54,
+      "type": "STR",
+      "access": "RW",
+      "name": "Sum unit",
+      "length": 1
+    },
+    {
+      "id": "8258:54",
+      "index": 8258,
+      "subindex": 54,
+      "type": "U8",
+      "access": "RW",
+      "name": "Sum decimals",
+      "length": 1
+    },
+    {
+      "id": "12304:1",
+      "index": 12304,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Peak value #1 source signal index",
+      "length": 1
+    },
+    {
+      "id": "12304:3",
+      "index": 12304,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #1 max",
+      "length": 1
+    },
+    {
+      "id": "12304:4",
+      "index": 12304,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #1 min",
+      "length": 1
+    },
+    {
+      "id": "12304:5",
+      "index": 12304,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #1 peak-to-peak",
+      "length": 1
+    },
+    {
+      "id": "12305:1",
+      "index": 12305,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Peak value #2 source signal index",
+      "length": 1
+    },
+    {
+      "id": "12305:3",
+      "index": 12305,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #2 max",
+      "length": 1
+    },
+    {
+      "id": "12305:4",
+      "index": 12305,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #2 min",
+      "length": 1
+    },
+    {
+      "id": "12305:5",
+      "index": 12305,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #2 peak-to-peak",
+      "length": 1
+    },
+    {
+      "id": "12306:1",
+      "index": 12306,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Peak value #3 source signal index",
+      "length": 1
+    },
+    {
+      "id": "12306:3",
+      "index": 12306,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #3 max",
+      "length": 1
+    },
+    {
+      "id": "12306:4",
+      "index": 12306,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #3 min",
+      "length": 1
+    },
+    {
+      "id": "12306:5",
+      "index": 12306,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #3 peak-to-peak",
+      "length": 1
+    },
+    {
+      "id": "12307:1",
+      "index": 12307,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Peak value #4 source signal index",
+      "length": 1
+    },
+    {
+      "id": "12307:3",
+      "index": 12307,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #4 max",
+      "length": 1
+    },
+    {
+      "id": "12307:4",
+      "index": 12307,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #4 min",
+      "length": 1
+    },
+    {
+      "id": "12307:5",
+      "index": 12307,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RO",
+      "name": "Peak value #4 peak-to-peak",
+      "length": 1
+    },
+    {
+      "id": "12336:1",
+      "index": 12336,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #1 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12336:2",
+      "index": 12336,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #1 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12336:3",
+      "index": 12336,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #1 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12336:4",
+      "index": 12336,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #1 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12336:5",
+      "index": 12336,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #1 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12336:6",
+      "index": 12336,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #1 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12336:7",
+      "index": 12336,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #1 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12337:1",
+      "index": 12337,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #2 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12337:2",
+      "index": 12337,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #2 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12337:3",
+      "index": 12337,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #2 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12337:4",
+      "index": 12337,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #2 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12337:5",
+      "index": 12337,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #2 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12337:6",
+      "index": 12337,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #2 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12337:7",
+      "index": 12337,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #2 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12338:1",
+      "index": 12338,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #3 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12338:2",
+      "index": 12338,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #3 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12338:3",
+      "index": 12338,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #3 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12338:4",
+      "index": 12338,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #3 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12338:5",
+      "index": 12338,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #3 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12338:6",
+      "index": 12338,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #3 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12338:7",
+      "index": 12338,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #3 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12339:1",
+      "index": 12339,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #4 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12339:2",
+      "index": 12339,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #4 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12339:3",
+      "index": 12339,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #4 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12339:4",
+      "index": 12339,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #4 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12339:5",
+      "index": 12339,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #4 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12339:6",
+      "index": 12339,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #4 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12339:7",
+      "index": 12339,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #4 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12340:1",
+      "index": 12340,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #5 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12340:2",
+      "index": 12340,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #5 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12340:3",
+      "index": 12340,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #5 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12340:4",
+      "index": 12340,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #5 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12340:5",
+      "index": 12340,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #5 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12340:6",
+      "index": 12340,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #5 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12340:7",
+      "index": 12340,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #5 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12341:1",
+      "index": 12341,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #6 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12341:2",
+      "index": 12341,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #6 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12341:3",
+      "index": 12341,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #6 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12341:4",
+      "index": 12341,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #6 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12341:5",
+      "index": 12341,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #6 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12341:6",
+      "index": 12341,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #6 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12341:7",
+      "index": 12341,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #6 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12342:1",
+      "index": 12342,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #7 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12342:2",
+      "index": 12342,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #7 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12342:3",
+      "index": 12342,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #7 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12342:4",
+      "index": 12342,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #7 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12342:5",
+      "index": 12342,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #7 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12342:6",
+      "index": 12342,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #7 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12342:7",
+      "index": 12342,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #7 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "12343:1",
+      "index": 12343,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #8 signal source index",
+      "length": 1
+    },
+    {
+      "id": "12343:2",
+      "index": 12343,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Limit switch #8 mode - inactive(0)",
+      "length": 1
+    },
+    {
+      "id": "12343:3",
+      "index": 12343,
+      "subindex": 3,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #8 limit 1",
+      "length": 1
+    },
+    {
+      "id": "12343:4",
+      "index": 12343,
+      "subindex": 4,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #8 limit 2",
+      "length": 1
+    },
+    {
+      "id": "12343:5",
+      "index": 12343,
+      "subindex": 5,
+      "type": "FLOAT",
+      "access": "RW",
+      "name": "Limit switch #8 hysteresis",
+      "length": 1
+    },
+    {
+      "id": "12343:6",
+      "index": 12343,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "Limit switch #8 enable invertion",
+      "length": 1
+    },
+    {
+      "id": "12343:7",
+      "index": 12343,
+      "subindex": 7,
+      "type": "I8",
+      "access": "RO",
+      "name": "Limit switch #8 state - off(0)",
+      "length": 1
+    },
+    {
+      "id": "16912:1",
+      "index": 16912,
+      "subindex": 1,
+      "type": "U32",
+      "access": "RO",
+      "name": "Flag signals (bits)",
+      "length": 1
+    },
+    {
+      "id": "16912:4",
+      "index": 16912,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RW",
+      "name": "User flags (bits 0..3)",
+      "length": 1
+    },
+    {
+      "id": "8960:1",
+      "index": 8960,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO #1 pin direction - input (0)",
+      "length": 1
+    },
+    {
+      "id": "8960:2",
+      "index": 8960,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO #2 pin direction - input (0)",
+      "length": 1
+    },
+    {
+      "id": "8960:3",
+      "index": 8960,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO #3 pin direction - input (0)",
+      "length": 1
+    },
+    {
+      "id": "8960:4",
+      "index": 8960,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO #4 pin direction - input (0)",
+      "length": 1
+    },
+    {
+      "id": "8964:1",
+      "index": 8964,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO output #1 flag signal selector",
+      "length": 1
+    },
+    {
+      "id": "8964:2",
+      "index": 8964,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO output #2 flag signal selector",
+      "length": 1
+    },
+    {
+      "id": "8964:3",
+      "index": 8964,
+      "subindex": 3,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO output #3 flag signal selector",
+      "length": 1
+    },
+    {
+      "id": "8964:4",
+      "index": 8964,
+      "subindex": 4,
+      "type": "U8",
+      "access": "RW",
+      "name": "DIO output #4 flag signal selector",
+      "length": 1
+    },
+    {
+      "id": "8965:1",
+      "index": 8965,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "DIO #1 enable output signal invertion",
+      "length": 1
+    },
+    {
+      "id": "8965:2",
+      "index": 8965,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "DIO #2 enable output signal invertion",
+      "length": 1
+    },
+    {
+      "id": "8965:3",
+      "index": 8965,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "DIO #3 enable output signal invertion",
+      "length": 1
+    },
+    {
+      "id": "8965:4",
+      "index": 8965,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RW",
+      "name": "DIO #4 enable output signal invertion",
+      "length": 1
+    },
+    {
+      "id": "8966:1",
+      "index": 8966,
+      "subindex": 1,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO over load fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:2",
+      "index": 8966,
+      "subindex": 2,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO current limit fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:3",
+      "index": 8966,
+      "subindex": 3,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO open wire fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:4",
+      "index": 8966,
+      "subindex": 4,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO above vdd fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:5",
+      "index": 8966,
+      "subindex": 5,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO short to vdd fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:6",
+      "index": 8966,
+      "subindex": 6,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO safe demag fault detected when set(1) ",
+      "length": 1
+    },
+    {
+      "id": "8966:7",
+      "index": 8966,
+      "subindex": 7,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO supply error fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8966:8",
+      "index": 8966,
+      "subindex": 8,
+      "type": "BOOL",
+      "access": "RO",
+      "name": "DIO communication fault detected when set(1)",
+      "length": 1
+    },
+    {
+      "id": "8968:1",
+      "index": 8968,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RO",
+      "name": "DIO safe demagneization fault channel detection",
+      "length": 1
+    },
+    {
+      "id": "4863:0",
+      "index": 4863,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RW",
+      "name": "PTP Transport Eth(0)",
+      "length": 1
+    },
+    {
+      "id": "4863:1",
+      "index": 4863,
+      "subindex": 1,
+      "type": "U8",
+      "access": "RW",
+      "name": "PTP Delay Mechanism: P2P(0)",
+      "length": 1
+    },
+    {
+      "id": "4863:2",
+      "index": 4863,
+      "subindex": 2,
+      "type": "U8",
+      "access": "RW",
+      "name": "PTP Domain Number",
+      "length": 1
+    },
+    {
+      "id": "4864:0",
+      "index": 4864,
+      "subindex": 0,
+      "type": "U8",
+      "access": "RW",
+      "name": "Synchronisation Master",
+      "length": 1
+    },
+    {
+      "id": "16128:1",
+      "index": 16128,
+      "subindex": 1,
+      "type": "U64",
+      "access": "RO",
+      "name": "Netx chassis MAC",
+      "length": 1
+    },
+    {
+      "id": "16128:2",
+      "index": 16128,
+      "subindex": 2,
+      "type": "U64",
+      "access": "RO",
+      "name": "Netx P1 MAC",
+      "length": 1
+    },
+    {
+      "id": "16128:3",
+      "index": 16128,
+      "subindex": 3,
+      "type": "U64",
+      "access": "RO",
+      "name": "Netx P2 MAC",
+      "length": 1
+    },
+    {
+      "id": "16128:5",
+      "index": 16128,
+      "subindex": 5,
+      "type": "U16",
+      "access": "RO",
+      "name": "Protocol type (21 PROFINET",
+      "length": 1
+    },
+    {
+      "id": "16128:6",
+      "index": 16128,
+      "subindex": 6,
+      "type": "STR",
+      "access": "RO",
+      "name": "Protocol name",
+      "length": 1
+    },
+    {
+      "id": "16128:7",
+      "index": 16128,
+      "subindex": 7,
+      "type": "STR",
+      "access": "RO",
+      "name": "Stack version",
+      "length": 1
+    },
+    {
+      "id": "16128:8",
+      "index": 16128,
+      "subindex": 8,
+      "type": "STR",
+      "access": "RO",
+      "name": "Stack date",
+      "length": 1
+    },
+    {
+      "id": "16128:9",
+      "index": 16128,
+      "subindex": 9,
+      "type": "U16",
+      "access": "RW",
+      "name": "Protocol switch (21 Profinet",
+      "length": 1
+    },
+    {
+      "id": "16128:19",
+      "index": 16128,
+      "subindex": 19,
+      "type": "STR",
+      "access": "RO",
+      "name": "Comm state string",
+      "length": 1
+    },
+    {
+      "id": "16128:20",
+      "index": 16128,
+      "subindex": 20,
+      "type": "U32",
+      "access": "RO",
+      "name": "Comm state (0 --",
+      "length": 1
+    },
+    {
+      "id": "16128:21",
+      "index": 16128,
+      "subindex": 21,
+      "type": "U32",
+      "access": "RO",
+      "name": "Comm error",
+      "length": 1
+    },
+    {
+      "id": "16128:22",
+      "index": 16128,
+      "subindex": 22,
+      "type": "U16",
+      "access": "RO",
+      "name": "Netx CPU load",
+      "length": 1
+    },
+    {
+      "id": "16129:1",
+      "index": 16129,
+      "subindex": 1,
+      "type": "U16",
+      "access": "RW",
+      "name": "Oversample source signal index 1",
+      "length": 1
+    },
+    {
+      "id": "16129:2",
+      "index": 16129,
+      "subindex": 2,
+      "type": "U16",
+      "access": "RW",
+      "name": "Oversample source signal index 2",
+      "length": 1
+    },
+    {
+      "id": "16129:3",
+      "index": 16129,
+      "subindex": 3,
+      "type": "U16",
+      "access": "RW",
+      "name": "Oversample source signal index 3",
+      "length": 1
+    },
+    {
+      "id": "16129:4",
+      "index": 16129,
+      "subindex": 4,
+      "type": "U16",
+      "access": "RW",
+      "name": "Oversample source signal index 4",
+      "length": 1
+    },
+    {
+      "id": "16129:5",
+      "index": 16129,
+      "subindex": 5,
+      "type": "U16",
+      "access": "RO",
+      "name": "Oversample frame counter",
+      "length": 1
+    },
+    {
+      "id": "16160:1",
+      "index": 16160,
+      "subindex": 1,
+      "type": "STR",
+      "access": "RW",
+      "name": "PN name of station",
+      "length": 1
+    },
+    {
+      "id": "16160:2",
+      "index": 16160,
+      "subindex": 2,
+      "type": "STR",
+      "access": "RW",
+      "name": "PN IP",
+      "length": 1
+    },
+    {
+      "id": "16160:3",
+      "index": 16160,
+      "subindex": 3,
+      "type": "STR",
+      "access": "RW",
+      "name": "PN netmask",
+      "length": 1
+    },
+    {
+      "id": "16160:4",
+      "index": 16160,
+      "subindex": 4,
+      "type": "STR",
+      "access": "RW",
+      "name": "PN gateway",
+      "length": 1
+    },
+    {
+      "id": "16160:8",
+      "index": 16160,
+      "subindex": 8,
+      "type": "STR",
+      "access": "RO",
+      "name": "PN controller IP",
+      "length": 1
+    },
+    {
+      "id": "16160:9",
+      "index": 16160,
+      "subindex": 9,
+      "type": "STR",
+      "access": "RO",
+      "name": "PN contoller name",
+      "length": 1
+    },
+    {
+      "id": "16160:10",
+      "index": 16160,
+      "subindex": 10,
+      "type": "U16",
+      "access": "RO",
+      "name": "PN AR type",
+      "length": 1
+    }
+  ]
+}
