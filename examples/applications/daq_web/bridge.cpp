@@ -66,7 +66,7 @@ class Workstation {
     static bool numeric(SampleType t) { return t>=SampleType::Float32 && t<=SampleType::Int64; }
     static double numberAt(const void* p,SampleType t,SizeT i) {
         switch(t) {
-#define VALUE_CASE(T,C) case SampleType::T: return static_cast<const C*>(p)[i];
+#define VALUE_CASE(T,C) case SampleType::T: return static_cast<double>(static_cast<const C*>(p)[i]);
             VALUE_CASE(Float32,float) VALUE_CASE(Float64,double) VALUE_CASE(Int8,int8_t) VALUE_CASE(UInt8,uint8_t)
             VALUE_CASE(Int16,int16_t) VALUE_CASE(UInt16,uint16_t) VALUE_CASE(Int32,int32_t) VALUE_CASE(UInt32,uint32_t)
             VALUE_CASE(Int64,int64_t) VALUE_CASE(UInt64,uint64_t)
