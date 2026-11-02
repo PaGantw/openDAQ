@@ -133,7 +133,11 @@
           <label>匯入裝置 OD CSV（選用）<input id="od-file" type="file" accept=".csv,text/csv" /></label>
           <label>搜尋 OD<input id="od-search" type="search" placeholder="例如 peak、capture、sum、0x3010" /></label>
           <div class="button-row"><button id="od-load">載入物件清單</button><button id="od-read">讀取選取項目</button><button id="od-clear">清除選取</button><button id="od-export">匯出 OD CSV</button></div>
-          <label><input id="od-auto" type="checkbox" /> 自動更新（每輪完成後等待 2 秒）</label>
+          <div class="button-row"><button id="od-trend-start">開始 OD 趨勢</button><button id="od-trend-stop">停止 OD 趨勢</button><button id="od-preset-save">匯出參數設定</button></div>
+          <label>匯入參數設定<input id="od-preset-file" type="file" accept=".json" /></label>
+          <label>讀取間隔（秒，完成一輪後等待）<input id="od-interval" type="number" min="0.5" max="60" step="0.5" value="2" /></label>
+          <div id="od-selected" class="table-wrap"></div>
+          <label><input id="od-auto" type="checkbox" /> 持續讀取並更新趨勢圖（切換本工作台分頁仍持續；瀏覽器背景分頁暫停）</label>
           <p id="od-status" class="muted" role="status">按「載入物件清單」或匯入 OD CSV，選取所需項目後讀取。</p>
           <div id="od-table" class="table-wrap"></div>
           <details id="digibox-reference">
@@ -154,6 +158,13 @@
         </article>
       </section>
       <section id="acquisition" class="tab">
+        <article class="panel">
+          <div class="panel-head"><h3>OD 參數趨勢圖</h3><button id="od-chart-stop">停止 OD 趨勢</button><button id="od-history-export">匯出 OD 趨勢 CSV</button><button id="od-history-clear">清除趨勢</button></div>
+          <p id="od-trend-status" role="status">尚未開始 OD 趨勢。</p>
+          <p class="muted">橫軸為後端讀取完成時間相對秒數，非裝置同步取樣時間。僅數值純量與布林值可繪圖；文字、陣列與超出安全整數範圍的值仍可在 OD 表格查看。最多保留每訊號 3,600 筆；關閉頁面後停止讀取，歷史不會保留。</p>
+          <label>顯示時窗<select id="od-window"><option value="60">最近 60 秒</option><option value="300">最近 5 分鐘</option><option value="1800">最近 30 分鐘</option><option value="all">全部保留資料</option></select></label>
+          <div id="od-plots"></div>
+        </article>
         <div class="intro">
           <h2>看見每一段訊號。</h2>
           <p>
