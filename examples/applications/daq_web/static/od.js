@@ -2,6 +2,26 @@
 (() => {
   let objects = [], chosen = new Set(), values = new Map(), reading = false, revision = 0;
   const status = (message) => $("od-status").textContent = message;
+  let sourceRevision = 0;
+  async function sourceOperation(write) {
+    const host = $("od-url").value.trim(), version = ++sourceRevision;
+    const box = $("stream-source-status");
+    box.textContent = write ? '正在套用並讀回確認…' : '正在讀取串流來源…';
+    try {
+      const result = await api(write ? 'stream_source_set' : 'stream_source_get', {
+        url: host, ...(write ? {value: Number($("stream-source").value)} : {})});
+      if (version !== sourceRevision || host !== $("od-url").value.trim()) return;
+      $("stream-source").value = String(result.value);
+      box.textContent = `已由裝置讀回確認：${result.value} · ${result.name}` + (write ? '。請重新連線 openDAQ，選取訊號後開始擷取；查看統計表的樣本時間估計 Hz。' : '');
+    } catch (error) {
+      if (version === sourceRevision) box.textContent = '操作未確認：' + error.message;
+    }
+  }
+  $("stream-source-read").onclick = () => action(() => sourceOperation(false));
+  $("stream-source-apply").onclick = () => action(() => sourceOperation(true));
+  $("od-url").addEventListener('input', () => {
+    sourceRevision++; $("stream-source-status").textContent = '裝置位址已變更，請重新讀取串流來源。';
+  });
   function render() {
     const query = $("od-search").value.toLowerCase().trim(), box = $("od-table");
     const filtered = objects.filter(o => `${o.name} 0x${o.index.toString(16)} ${o.subindex} ${o.type} ${o.access}`.toLowerCase().includes(query));

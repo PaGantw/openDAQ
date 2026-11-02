@@ -128,8 +128,13 @@
         </article>
         <article class="panel">
           <h3>digiBOX OD 實際讀值（REST API）</h3>
-          <p class="muted">內建附件 OD 與 OpenAPI 交叉確認的 537 個可讀物件，包含量測、統計、狀態與可讀設定。這些不是 537 路高速串流。由後端電腦連線至設備；每次最多選取 16 項，各項讀值時間不同。此區只發送 GET，不執行設定或重置。</p>
+          <p class="muted">內建附件 OD 與 OpenAPI 交叉確認的 537 個可讀物件，包含量測、統計、狀態與可讀設定。這些不是 537 路高速串流。由後端電腦連線至設備；每次最多選取 16 項，各項讀值時間不同。OD 數值區只讀取；下方串流來源選單可另外設定來源，不執行重置。</p>
           <label>裝置 HTTP 位址<input id="od-url" value="http://169.254.27.27" /></label>
+          <h3>openDAQ 高速串流來源</h3>
+          <p class="muted">來源對應由實機確認。此設定是裝置層級的串流來源選擇，並非每個 OD 項目皆可獨立串流。先停止擷取並中斷工作台裝置連線，套用後重新連線，再到「擷取與波形」選取訊號並開始 openDAQ 擷取。下方 OD 輪詢仍是低速趨勢。</p>
+          <label>Streaming Source<select id="stream-source"><option value="1">1 · Field value</option><option value="2">2 · Unfilter value</option><option value="3">3 · Filter 1 value</option><option value="4">4 · Filter 2 value</option><option value="5">5 · Net value</option><option value="6" selected>6 · Final value</option></select></label>
+          <div class="button-row"><button id="stream-source-read">讀取目前串流來源</button><button id="stream-source-apply">套用串流來源</button></div>
+          <p id="stream-source-status" class="muted" role="status">尚未讀取實機設定；選單預設顯示 6，不代表已驗證目前來源。</p>
           <label>匯入裝置 OD CSV（選用）<input id="od-file" type="file" accept=".csv,text/csv" /></label>
           <label>搜尋 OD<input id="od-search" type="search" placeholder="例如 peak、capture、sum、0x3010" /></label>
           <div class="button-row"><button id="od-load">載入物件清單</button><button id="od-read">讀取選取項目</button><button id="od-clear">清除選取</button><button id="od-export">匯出 OD CSV</button></div>

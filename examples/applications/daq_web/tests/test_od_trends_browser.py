@@ -27,6 +27,12 @@ with tempfile.TemporaryDirectory() as tmp:
    page.goto(f'http://127.0.0.1:{http.server_port}');page.wait_for_function('() => token && !busy')
    page.wait_for_function("() => document.querySelector('#od-table tbody')?.rows.length === 537")
    page.locator('#od-url').fill(f'http://127.0.0.1:{fake.server_port}')
+   page.locator('#stream-source-read').click()
+   page.wait_for_function("() => document.querySelector('#stream-source-status').textContent.includes('Final value')")
+   page.locator('#stream-source').select_option('3')
+   page.locator('#stream-source-apply').click()
+   page.wait_for_function("() => document.querySelector('#stream-source-status').textContent.includes('3 · Filter 1 value')")
+   assert test.Device.source == 3
    page.locator('#od-table tbody tr input').first.check()
    page.get_by_role('textbox',name='16896:1 顯示名稱',exact=True).fill('參數 A')
    page.get_by_role('textbox',name='16896:1 顯示名稱',exact=True).press('Tab')

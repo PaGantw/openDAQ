@@ -676,6 +676,7 @@ function renderLive() {
   [
     "訊號",
     "筆數／幀數",
+    "樣本時間估計 Hz",
     "最小",
     "最大",
     "峰對峰",
@@ -690,6 +691,8 @@ function renderLive() {
     [
       signal?.name || s.id,
       s.count,
+      s.kind !== "vector" && s.rawPoints?.length > 1 && s.rawPoints.at(-1)[0] > s.rawPoints[0][0]
+        ? (s.rawPoints.length - 1) / (s.rawPoints.at(-1)[0] - s.rawPoints[0][0]) : null,
       s.min,
       s.max,
       s.min === null || s.max === null ? null : s.max - s.min,

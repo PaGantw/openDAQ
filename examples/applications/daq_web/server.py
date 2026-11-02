@@ -51,17 +51,21 @@ class NoODRedirect(urllib.request.HTTPRedirectHandler):
         raise ValueError('OD endpoint redirects are not supported; check device address')
 
 
-def od_read(base_url, ids):
+def od_origin(base_url):
     url = urlsplit(base_url if isinstance(base_url, str) else '')
     if (url.scheme not in ('http', 'https') or not url.hostname or url.username or
             url.password or url.query or url.fragment or url.path not in ('', '/')):
         raise ValueError('Enter a device origin such as http://169.254.27.27')
+    return f'{url.scheme}://{url.netloc}'
+
+
+def od_read(base_url, ids):
+    origin = od_origin(base_url)
     if not isinstance(ids, list) or not 1 <= len(ids) <= 16 or not all(isinstance(x, str) for x in ids):
         raise ValueError('Select 1–16 OD objects')
     known = {item['id']: item for item in od_catalog()}
     if any(key not in known for key in ids):
         raise ValueError('Unknown or write-only OD object')
-    origin = f'{url.scheme}://{url.netloc}'
 
     def read(key):
         item = known[key]
@@ -91,6 +95,35 @@ def od_read(base_url, ids):
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         return list(executor.map(read, dict.fromkeys(ids)))
+
+
+STREAM_SOURCES = {1: 'Field value', 2: 'Unfilter value', 3: 'Filter 1 value',
+                  4: 'Filter 2 value', 5: 'Net value', 6: 'Final value'}
+
+
+def stream_source(base_url, value=None):
+    origin = od_origin(base_url)
+    if value is not None:
+        if type(value) is not int or value not in STREAM_SOURCES:
+            raise ValueError('Streaming Source must be an integer from 1 to 6')
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoODRedirect())
+        request = urllib.request.Request(origin + '/od/4612/0',
+            data=json.dumps({'value': value}).encode(), method='PUT',
+            headers={'Content-Type': 'application/json', 'Accept': 'application/json'})
+        try:
+            with opener.open(request, timeout=3) as response:
+                response.read(4096)
+        except Exception as exc:
+            raise ValueError('Streaming Source write failed; read back current source before retrying: ' + str(exc)) from exc
+    item = od_read(origin, ['4612:0'])[0]
+    if item['status'] != 'ok':
+        raise ValueError('Streaming Source readback failed; source may have changed: ' + item['error'])
+    current = item['value']
+    if type(current) is not int or current not in STREAM_SOURCES:
+        raise ValueError('Device returned an unknown Streaming Source')
+    if value is not None and current != value:
+        raise ValueError(f'Streaming Source verification failed: requested {value}, received {current}')
+    return {'value': current, 'name': STREAM_SOURCES[current], 'verified': True}
 
 
 class Bridge:
@@ -305,6 +338,19 @@ class Station:
                     'sdkLogs': list(self.bridge.logs)[-30:]}
 
     def command(self, op, args):
+        if op == 'stream_source_get':
+            return stream_source(args.get('url'))
+        if op == 'stream_source_set':
+            with self.lock:
+                if self.running or self.record:
+                    raise ValueError('Stop acquisition and recording before changing Streaming Source')
+                if any(n['kind'] == 'device' for n in self.bridge.call('state')['nodes']):
+                    raise ValueError('Disconnect workstation devices before changing Streaming Source, then reconnect to refresh descriptors')
+                if 'value' not in args or args['value'] is None:
+                    raise ValueError('Missing Streaming Source value')
+                result = stream_source(args.get('url'), args['value'])
+                self.event('Streaming Source verified: ' + result['name'])
+                return result
         if op == 'od_catalog':
             return {'items': od_catalog(args.get('csv'))}
         if op == 'od_read':
